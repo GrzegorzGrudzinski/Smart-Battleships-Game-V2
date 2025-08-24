@@ -30,7 +30,7 @@
 
     gdzie domyslna_powierzchnia_statkow to  suma pola wszystkich statkow w domyslnej ilosci + 1
 */
-void znajdz_ile_statkow(int szerokosc, int dlugosc, int& statek_najwiekszy, int& statek_duzy, int& statek_sredni, int& statek_maly,int poziom_trudnosci = 1);
+void znajdz_ile_statkow(int szerokosc, int dlugosc, int* liczba_statkow_arr, int poziom_trudnosci = 1);
 
 /**
     Funkcja rozstawia w sposob losowy statki na planszy

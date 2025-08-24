@@ -4,66 +4,56 @@
 #include "../bot/bot.h"
 #include "../pliki/obsluga_plikow.h"
 
-// obsluga listy ruchow //
+// StatekRoboczy::StatekRoboczy(int r): rozmiar(r) , pozostale_pola(r) {}
 
-void dodaj_ruch(Ruchy*& ruch, Plansza** plansza_gracz, int numer_ruchu, int uzyte_pole[], int gracz, int D, int S)
-{
-    // Tworzenie kopii planszy
-    Plansza** kopia = new Plansza*[D];
-    for (int j = 0; j < D; j++) {
-        kopia[j] = new Plansza[S];
-        for (int k = 0; k < S; k++) {
-            kopia[j][k] = plansza_gracz[j][k];
-        }
+void StatekRoboczy::UstawRozmiar (int r) {
+    rozmiar = r;
+    pozostale_pola = r;
+}
+
+bool StatekRoboczy::CzyZatopiony() const {
+    if (pozostale_pola == 0) {
+        return true;
     }
-
-    // Nowy ruch
-    Ruchy *nowy = new Ruchy;
-    nowy->numer_ruchu = numer_ruchu;
-    nowy->uzytkownik  = gracz;
-    nowy->plansza = kopia;
-    for(int i=0; i < 3; i++)
-        nowy->uzyte_pole[i] = uzyte_pole[i];
-    nowy->D = D;
-    nowy->S = S;
-    nowy->nastepny = nullptr;
-
-    // Dodanie nowego ruchu
-    if(ruch==nullptr){
-        ruch = nowy;
-    }
-    else{
-        Ruchy* temp = ruch;
-        while(temp->nastepny!=nullptr)
-            temp = temp->nastepny;
-        temp->nastepny = nowy;
+    else {
+        return false;
     }
 }
 
-void usun_liste(Ruchy*& ruch)
-{
-    while(ruch != nullptr)
-    {
-        Ruchy* temp = ruch;
-        ruch = ruch->nastepny;
+void StatekRoboczy::Trafienie() {
+    if (pozostale_pola > 0) {
+        pozostale_pola--;
+    }
+}
 
-        // Zwolnienie pamięci dla planszy
-        for (int j = 0; j < temp->D; j++) {
-            delete[] temp->plansza[j];
-        }
-        delete[] temp->plansza;
-        delete temp;
+//
+
+void UtworzStatkiGracza(StatekRoboczy* statki_arr, int* liczba_statkow_arr) {
+    int index = 0;
+
+    //najwiekszy
+    for (int i=0; i<liczba_statkow_arr[0]; i++) {
+        statki_arr[index].UstawRozmiar(5);
+        index++;
+    }
+    //duzy
+    for (int i=0; i<liczba_statkow_arr[1]; i++) {
+        statki_arr[index].UstawRozmiar(4);
+        index++;
+    }
+    //sredni
+    for (int i=0; i<liczba_statkow_arr[2]; i++) {
+        statki_arr[index].UstawRozmiar(3);
+        index++;
+    }
+    //maly
+    for (int i=0; i<liczba_statkow_arr[3]; i++) {
+        statki_arr[index].UstawRozmiar(2);
+        index++;
     }
 }
 
 // Funkcje do obsługi rozgrywki//
-
-//wybiera metode w jaka podawane jest zgadywane pole w zaleznosci od typu gracza (bot/uzytkownik)
-int* metoda_zgadywania(int S,int D, Uzytkownik gracz, Plansza** plansza, int& ile_zatopiono)
-{
-    if(gracz.rodzaj == 1) return zgadnij_pole(S,D);
-    else return losuj_pole(S,D, plansza, ile_zatopiono);
-}
 
 //glowna petla gry - tu robione sa wszystkie nastawy przed rozgrywka po czym uruchamiana jest sama gra
 int rozgrywka()
@@ -86,64 +76,87 @@ int rozgrywka()
     Plansza** plansza_gracz2 = stworz_plansze(D,S);
 
     //zmienne przechowujace ilosci statkow
-    int statek_najwiekszy_ile;//dynamicznie
-    int statek_duzy_ile;
-    int statek_sredni_ile;
-    int statek_maly_ile;
+    // int statek_najwiekszy_ile;//dynamicznie
+    // int statek_duzy_ile;
+    // int statek_sredni_ile;
+    // int statek_maly_ile;
 
-    znajdz_ile_statkow(S,D, statek_najwiekszy_ile, statek_duzy_ile, statek_sredni_ile, statek_maly_ile);
+    int liczba_statkow_arr[4]; // 4 rozmiary statkow
+    /*
+     0 - najwiekszy (5)
+     1 - duzy (4)
+     2 - sredni (3)
+     3 - maly (2)
+     */
 
-    int poczatkowa_liczba_statkow = statek_najwiekszy_ile+statek_duzy_ile+statek_sredni_ile+statek_maly_ile;
+    znajdz_ile_statkow(S,D, liczba_statkow_arr);
+
+    int poczatkowa_liczba_statkow = liczba_statkow_arr[0]+liczba_statkow_arr[1]+liczba_statkow_arr[2]+liczba_statkow_arr[3];
     int pozostale_statki_gracz1 = poczatkowa_liczba_statkow;
     int pozostale_statki_gracz2 = poczatkowa_liczba_statkow;
     int ile_zatopiono_gracz1{}, ile_zatopiono_gracz2{};
 
-    // dodaj statki na plansze - uzytkownik//
-    Statek* statek_najwiekszy = new Statek[statek_najwiekszy_ile];
-    dodaj_statek( S, D, statek_najwiekszy, statek_najwiekszy_ile, 5, plansza_gracz1);
 
-    Statek* statek_duzy = new Statek[statek_duzy_ile];
-    dodaj_statek( S, D, statek_duzy, statek_duzy_ile, 4, plansza_gracz1);
 
-    Statek* statek_sredni = new Statek[statek_sredni_ile];
-    dodaj_statek(S, D, statek_sredni, statek_sredni_ile, 3, plansza_gracz1);
 
-    Statek* statek_maly = new Statek[statek_maly_ile];
-    dodaj_statek(S, D, statek_maly, statek_maly_ile, 2, plansza_gracz1);
+
+    StatekRoboczy statki[poczatkowa_liczba_statkow];
+    UtworzStatkiGracza(statki, liczba_statkow_arr);
+
+    for (int i=0;i<(poczatkowa_liczba_statkow); i++ ) {
+        statki[i].DrukujRozmiar();
+    }
+
+
+
+
+
+    // dodaj statki na plansze - uzytkownik //
+    Statek* statek_najwiekszy = new Statek[liczba_statkow_arr[0]];
+    dodaj_statek( S, D, statek_najwiekszy, liczba_statkow_arr[0], 5, plansza_gracz1);
+
+    Statek* statek_duzy = new Statek[liczba_statkow_arr[1]];
+    dodaj_statek( S, D, statek_duzy, liczba_statkow_arr[1], 4, plansza_gracz1);
+
+    Statek* statek_sredni = new Statek[liczba_statkow_arr[2]];
+    dodaj_statek(S, D, statek_sredni, liczba_statkow_arr[2], 3, plansza_gracz1);
+
+    Statek* statek_maly = new Statek[liczba_statkow_arr[3]];
+    dodaj_statek(S, D, statek_maly, liczba_statkow_arr[3], 2, plansza_gracz1);
 
     // dodaj statki na plansze - bot//
-    Statek* statek_najwiekszy2 = new Statek[statek_najwiekszy_ile];
-    dodaj_statek( S, D, statek_najwiekszy2, statek_najwiekszy_ile, 5, plansza_gracz2);
+    Statek* statek_najwiekszy2 = new Statek[liczba_statkow_arr[0]];
+    dodaj_statek( S, D, statek_najwiekszy2, liczba_statkow_arr[0], 5, plansza_gracz2);
 
-    Statek* statek_duzy2 = new Statek[statek_duzy_ile];
-    dodaj_statek( S, D, statek_duzy2, statek_duzy_ile, 4, plansza_gracz2);
+    Statek* statek_duzy2 = new Statek[liczba_statkow_arr[1]];
+    dodaj_statek( S, D, statek_duzy2, liczba_statkow_arr[1], 4, plansza_gracz2);
 
-    Statek* statek_sredni2 = new Statek[statek_sredni_ile];
-    dodaj_statek(S, D, statek_sredni2, statek_sredni_ile, 3, plansza_gracz2);
+    Statek* statek_sredni2 = new Statek[liczba_statkow_arr[2]];
+    dodaj_statek(S, D, statek_sredni2, liczba_statkow_arr[2], 3, plansza_gracz2);
 
-    Statek* statek_maly2 = new Statek[statek_maly_ile];
-    dodaj_statek(S, D, statek_maly2, statek_maly_ile, 2, plansza_gracz2);
+    Statek* statek_maly2 = new Statek[liczba_statkow_arr[3]];
+    dodaj_statek(S, D, statek_maly2, liczba_statkow_arr[3], 2, plansza_gracz2);
 
     //rozgrywka
-    gra(gracz1,gracz2,plansza_gracz1,plansza_gracz2, pozostale_statki_gracz1, pozostale_statki_gracz2, statek_najwiekszy, statek_duzy, statek_sredni, statek_maly, statek_najwiekszy2, statek_duzy2, statek_sredni2, statek_maly2, statek_najwiekszy_ile, statek_duzy_ile, statek_sredni_ile, statek_maly_ile, S, D, ile_zatopiono_gracz1, ile_zatopiono_gracz2, czy_widoczne);
+    gra(gracz1,gracz2,plansza_gracz1,plansza_gracz2, pozostale_statki_gracz1, pozostale_statki_gracz2, statek_najwiekszy, statek_duzy, statek_sredni, statek_maly, statek_najwiekszy2, statek_duzy2, statek_sredni2, statek_maly2, liczba_statkow_arr, S, D, ile_zatopiono_gracz1, ile_zatopiono_gracz2, czy_widoczne);
 
     // zwolnij miejsce po rozgrywce
-    for(int i=0; i<statek_najwiekszy_ile; i++)
+    for(int i=0; i<liczba_statkow_arr[0]; i++)
         usun_statek(plansza_gracz1, statek_najwiekszy, statek_najwiekszy->rozmiar, i);
-    for(int i=0; i<statek_duzy_ile; i++)
+    for(int i=0; i<liczba_statkow_arr[1]; i++)
         usun_statek(plansza_gracz1, statek_duzy, statek_duzy->rozmiar, i);
-    for(int i=0; i<statek_sredni_ile; i++)
+    for(int i=0; i<liczba_statkow_arr[2]; i++)
         usun_statek(plansza_gracz1, statek_sredni, statek_sredni->rozmiar, i);
-    for(int i=0; i<statek_maly_ile; i++)
+    for(int i=0; i<liczba_statkow_arr[3]; i++)
         usun_statek(plansza_gracz1, statek_maly, statek_maly->rozmiar, i);
 
-    for(int i=0; i<statek_najwiekszy_ile; i++)
+    for(int i=0; i<liczba_statkow_arr[0]; i++)
         usun_statek(plansza_gracz2, statek_najwiekszy2, statek_najwiekszy2->rozmiar, i);
-    for(int i=0; i<statek_duzy_ile; i++)
+    for(int i=0; i<liczba_statkow_arr[1]; i++)
         usun_statek(plansza_gracz2, statek_duzy2, statek_duzy2->rozmiar, i);
-    for(int i=0; i<statek_sredni_ile; i++)
+    for(int i=0; i<liczba_statkow_arr[2]; i++)
         usun_statek(plansza_gracz2, statek_sredni2, statek_sredni2->rozmiar, i);
-    for(int i=0; i<statek_maly_ile; i++)
+    for(int i=0; i<liczba_statkow_arr[3]; i++)
         usun_statek(plansza_gracz2, statek_maly2, statek_maly2->rozmiar, i);
 
     delete [] statek_najwiekszy;
@@ -163,8 +176,14 @@ int rozgrywka()
     return 0;
 }
 //Petla rozgrywki
-void gra(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza** plansza_gracz2, int& pozostale_statki_gracz1, int& pozostale_statki_gracz2, Statek najwiekszy1[], Statek duzy1[], Statek sredni1[], Statek maly1[], Statek najwiekszy2[], Statek duzy2[], Statek sredni2[], Statek maly2[], int statek_najwiekszy_ile, int statek_duzy_ile, int statek_sredni_ile, int statek_maly_ile, int szerokosc, int dlugosc, int& ile_zatopiono_gracz1, int& ile_zatopiono_gracz2, bool czy_widoczne)
+void gra(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza** plansza_gracz2, int& pozostale_statki_gracz1, int& pozostale_statki_gracz2, Statek najwiekszy1[], Statek duzy1[], Statek sredni1[], Statek maly1[], Statek najwiekszy2[], Statek duzy2[], Statek sredni2[], Statek maly2[], int* liczba_statkow_arr, int szerokosc, int dlugosc, int& ile_zatopiono_gracz1, int& ile_zatopiono_gracz2, bool czy_widoczne)
 {
+
+    int& statek_najwiekszy_ile = liczba_statkow_arr[0];
+    int& statek_duzy_ile = liczba_statkow_arr[1];
+    int& statek_sredni_ile = liczba_statkow_arr[2];
+    int& statek_maly_ile = liczba_statkow_arr[3];
+
     Uzytkownik gracz = gracz1;   //
     int pozostale_statki_aktywny_gracz = pozostale_statki_gracz1;
     int ile_zatopiono_aktywne = ile_zatopiono_gracz1;
@@ -298,7 +317,68 @@ void gra(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza
     }
 }
 
+
+// obsluga listy ruchow //
+
+void dodaj_ruch(Ruchy*& ruch, Plansza** plansza_gracz, int numer_ruchu, int uzyte_pole[], int gracz, int D, int S)
+{
+    // Tworzenie kopii planszy
+    Plansza** kopia = new Plansza*[D];
+    for (int j = 0; j < D; j++) {
+        kopia[j] = new Plansza[S];
+        for (int k = 0; k < S; k++) {
+            kopia[j][k] = plansza_gracz[j][k];
+        }
+    }
+
+    // Nowy ruch
+    Ruchy *nowy = new Ruchy;
+    nowy->numer_ruchu = numer_ruchu;
+    nowy->uzytkownik  = gracz;
+    nowy->plansza = kopia;
+    for(int i=0; i < 3; i++)
+        nowy->uzyte_pole[i] = uzyte_pole[i];
+    nowy->D = D;
+    nowy->S = S;
+    nowy->nastepny = nullptr;
+
+    // Dodanie nowego ruchu
+    if(ruch==nullptr){
+        ruch = nowy;
+    }
+    else{
+        Ruchy* temp = ruch;
+        while(temp->nastepny!=nullptr)
+            temp = temp->nastepny;
+        temp->nastepny = nowy;
+    }
+}
+
+void usun_liste(Ruchy*& ruch)
+{
+    while(ruch != nullptr)
+    {
+        Ruchy* temp = ruch;
+        ruch = ruch->nastepny;
+
+        // Zwolnienie pamięci dla planszy
+        for (int j = 0; j < temp->D; j++) {
+            delete[] temp->plansza[j];
+        }
+        delete[] temp->plansza;
+        delete temp;
+    }
+}
+
+
 // Funkcje do sprawdzania podanego pola //
+
+//wybiera metode w jaka podawane jest zgadywane pole w zaleznosci od typu gracza (bot/uzytkownik)
+int* metoda_zgadywania(int S,int D, Uzytkownik gracz, Plansza** plansza, int& ile_zatopiono)
+{
+    if(gracz.rodzaj == 1) return zgadnij_pole(S,D);
+    else return losuj_pole(S,D, plansza, ile_zatopiono);
+}
 
 //Przyjmuje jako parametr zgadywany punkt i wszystkie statki, sprawdza jaki statek znajduje sie pod takim polem
 bool czy_trafiony(Statek statek[], int statek_ile, Plansza** plansza, int& pozostale_statki, int S, int D, int& ile_zatopiono)

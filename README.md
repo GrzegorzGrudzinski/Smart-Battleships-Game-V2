@@ -9,4 +9,4 @@ Main goal of this project was to learn **object-oriented programming**, **dynami
  * Smart computer bot, which guesses in a way that a human person would
  * Saving game contents to a file (under pliki/log)
 
-This project is a continuation of github.com/GrzegorzGrudzinski/Smart-Battleships-Game.git
+This project is a continuation of [Smart-Battleships-Game-V1](github.com/GrzegorzGrudzinski/Smart-Battleships-Game.git)

@@ -7,8 +7,7 @@ using namespace std;
 //********        BOT         ********//
 ////////////////////////////////////////
 void znajdz_ile_statkow(
-    int szerokosc, int dlugosc,
-    int& statek_najwiekszy, int& statek_duzy, int& statek_sredni, int& statek_maly,
+    int szerokosc, int dlugosc, int* liczba_statkow_arr,
     int poziom_trudnosci) //znajdz jakie statki mozna ustawic na planszy
 {
     /*
@@ -20,6 +19,11 @@ void znajdz_ile_statkow(
         powierzchnia wszystkich [17]
 
     */
+    int& statek_najwiekszy = liczba_statkow_arr[0];
+    int& statek_duzy = liczba_statkow_arr[1];
+    int& statek_sredni = liczba_statkow_arr[2];
+    int& statek_maly = liczba_statkow_arr[3];
+
     if(szerokosc == 0)
         szerokosc = 1;
     if(dlugosc == 0)
@@ -36,9 +40,9 @@ void znajdz_ile_statkow(
     int pole_statkow = (1/(double(poziom_trudnosci)) * (0.3) * double(pole_planszy)) ;
 
     //////////////////////////////////////////////////////////////////
-    cout<<endl<<"Pole statkow: "<<pole_statkow<<endl;
-    cout<<endl<<"Poziom trudnosci: "<<poziom_trudnosci<<endl;
-    cout<<endl<<"Pole planszy: "<<pole_planszy<<endl;
+    // cout<<endl<<"Pole statkow: "<<pole_statkow<<endl;
+    // cout<<endl<<"Poziom trudnosci: "<<poziom_trudnosci<<endl;
+    // cout<<endl<<"Pole planszy: "<<pole_planszy<<endl;
     //////////////////////////////////////////////////////////////////
 
     if(pole_statkow<1)
@@ -50,7 +54,7 @@ void znajdz_ile_statkow(
     statek_sredni = 2 * pole_statkow / domyslna_powierzchnia_statkow;
     statek_maly = pole_statkow / domyslna_powierzchnia_statkow;
 
-    /*/////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
      cout<<endl<<"Pole planszy: "<<pole_planszy<<endl;
      cout<<"Pole statkow: "<<pole_statkow<<endl;
      cout<<"Faktyczne pole statkow: "<<statek_duzy*4+statek_najwiekszy*5+statek_maly*2+statek_sredni*3<<endl;
@@ -60,7 +64,7 @@ void znajdz_ile_statkow(
      cout<<statek_duzy<<'\t';
      cout<<statek_sredni<<'\t';
      cout<<statek_maly<<endl<<endl;
-    /*/
+
 
 }
 
