@@ -61,7 +61,6 @@ int rozgrywka()
     //rozmiary planszy
     int S = 9; //domyslnie 9
     int D = 7; //domyslnie 7
-    // int G = 1; //domyslnie 1(0)
 
     // struktury przechowujace informacje o graczach
     Uzytkownik gracz1;  gracz1.rodzaj = 1; gracz1.numer = 1; //gracz
@@ -91,7 +90,7 @@ int rozgrywka()
 
     znajdz_ile_statkow(S,D, liczba_statkow_arr);
 
-    int poczatkowa_liczba_statkow = liczba_statkow_arr[0]+liczba_statkow_arr[1]+liczba_statkow_arr[2]+liczba_statkow_arr[3];
+    const int poczatkowa_liczba_statkow = liczba_statkow_arr[0]+liczba_statkow_arr[1]+liczba_statkow_arr[2]+liczba_statkow_arr[3];
     int pozostale_statki_gracz1 = poczatkowa_liczba_statkow;
     int pozostale_statki_gracz2 = poczatkowa_liczba_statkow;
     int ile_zatopiono_gracz1{}, ile_zatopiono_gracz2{};

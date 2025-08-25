@@ -4,16 +4,9 @@
 #include <cstring>
 #include "plansza.h"
 
-
-//
-#include <iostream>
-//
-
 // using std::string;
 
-
 // STRUKTURY //
-
 
 struct Plansza; //deklaracja wstepna planszy
 
