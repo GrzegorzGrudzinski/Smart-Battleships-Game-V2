@@ -8,8 +8,9 @@
     #include <windows.h> // Wymagane na Windows
 #endif
 
-#include "../plansza/plansza.h"
+
 #include "gui.h"
+#include "plansza.h"
 
 using std::cout;
 using std::cin;

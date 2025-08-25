@@ -1,5 +1,5 @@
 #include "bot.h"
-#include "../gui/gui.h"
+#include "gui.h"
 #include <cstdlib>
 
 using namespace std;

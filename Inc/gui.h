@@ -2,7 +2,7 @@
 #define GUI_H
 
 #include <iostream>
-#include "../plansza/plansza.h"
+#include "plansza.h"
 
 /**
     Wyświetla początkowe menu wyboru, oraz przyjmuje od użytkownika wybraną opcję.

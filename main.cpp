@@ -2,9 +2,9 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "rozgrywka/rozgrywka.h"
-#include "gui/gui.h"
-#include "pliki/obsluga_plikow.h"
+#include "rozgrywka.h"
+#include "gui.h"
+#include "obsluga_plikow.h"
 
 /// Funkcja główna programu
 int main()

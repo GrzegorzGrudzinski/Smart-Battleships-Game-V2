@@ -1,5 +1,5 @@
 #include "obsluga_plikow.h"
-#include "../rozgrywka/rozgrywka.h"
+#include "rozgrywka.h"
 
 #include <iostream>
 #include <iomanip>

@@ -1,8 +1,8 @@
 #ifndef BOT_H
 #define BOT_H
 
-#include "../plansza/plansza.h"
-#include "../rozgrywka/rozgrywka.h"
+#include "plansza.h"
+#include "rozgrywka.h"
 
 
 // FUNKCJE DO OBSLUGI STATKOW NA PLANSZY //

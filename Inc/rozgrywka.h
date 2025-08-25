@@ -2,7 +2,7 @@
 #define ROZGRYWKA_H
 
 #include <cstring>
-#include "../plansza/plansza.h"
+#include "plansza.h"
 
 
 //
@@ -75,9 +75,7 @@ class StatekRoboczy {
       void Trafienie();
       bool CzyZatopiony() const;
 
-      void DrukujRozmiar() {
-        std::cout<<rozmiar<<std::endl;
-      }
+
       // ~Statek();
 };
 

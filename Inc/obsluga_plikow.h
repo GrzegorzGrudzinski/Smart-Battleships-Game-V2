@@ -1,7 +1,7 @@
 #ifndef OBSLUGA_PLIKOW_H
 #define OBSLUGA_PLIKOW_H
 
-#include "../rozgrywka/rozgrywka.h"
+#include "rozgrywka.h"
 
 /**
     Funkcja służąca do utworzenia pliku z ustawieniami, jeśli taki nie istnieje, w folderze gry

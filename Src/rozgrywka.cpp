@@ -1,8 +1,8 @@
 #include "rozgrywka.h"
-#include "../gui/gui.h"
-#include "../plansza/plansza.h"
-#include "../bot/bot.h"
-#include "../pliki/obsluga_plikow.h"
+#include "gui.h"
+#include "plansza.h"
+#include "bot.h"
+#include "obsluga_plikow.h"
 
 // StatekRoboczy::StatekRoboczy(int r): rozmiar(r) , pozostale_pola(r) {}
 
@@ -102,10 +102,6 @@ int rozgrywka()
 
     StatekRoboczy statki[poczatkowa_liczba_statkow];
     UtworzStatkiGracza(statki, liczba_statkow_arr);
-
-    for (int i=0;i<(poczatkowa_liczba_statkow); i++ ) {
-        statki[i].DrukujRozmiar();
-    }
 
 
 

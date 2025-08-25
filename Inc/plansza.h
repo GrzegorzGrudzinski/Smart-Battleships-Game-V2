@@ -2,7 +2,7 @@
 #ifndef PLANSZA_H
 #define PLANSZA_H
 
-#include "../rozgrywka/rozgrywka.h"
+#include "rozgrywka.h"
 
 
 struct Statek;//deklaracja wstepna
