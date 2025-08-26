@@ -37,12 +37,26 @@ void znajdz_ile_statkow(int szerokosc, int dlugosc, int* liczba_statkow_arr, int
     Przyjmuje jako parametry rozmiary planszy, statek który ma zostać umieszczony na planszy, plansze na której statek ma zostać umieszczony i numer statku (i)
 
 */
-void rozstaw_statki_losowo(int szerokosc, int dlugosc, Statek statek[], int rozmiar_statku, Plansza** plansza, int i);
+void RozstawStatekRoboczyLosowo(
+    int szerokosc, int dlugosc,
+    StatekRoboczy& statek, Plansza** plansza);
+// void rozstaw_statki_losowo(int szerokosc, int dlugosc, Statek statek[], int rozmiar_statku, Plansza** plansza, int i);
 
 /**
-    Funkcja ktora po wywolaniu umieszcza wszystkie statki danego typu na planszy - losuje jego pozycje a nastepnie oznacza pola planszy jako zajete
+    Funkcja ktora po wywolaniu umieszcza wszystkie statki na planszy - losuje jego pozycje a nastepnie oznacza pola planszy jako zajete
 */
-void dodaj_statek(int szerokosc, int dlugosc, Statek statek[], int statek_ile, int statek_rozmiar, Plansza**& plansza);
+void DodajStatki(int szerokosc, int dlugosc, StatekRoboczy statki[], int liczba_statkow ,Plansza**& plansza);
+// void dodaj_statek(int szerokosc, int dlugosc, Statek statek[], int statek_ile, int statek_rozmiar, Plansza**& plansza);
+
+
+/**
+ * Funkcja mająca oznaczyć pola planszy na których został umieszczony statek jako zajęte.
+ */
+void DodajStatekNaPlansze(Plansza**& plansza, StatekRoboczy& statek);
+
+
+
+
 
 
 // FUNKCJE DO OBSLUGI LOSOWAN BOTA //

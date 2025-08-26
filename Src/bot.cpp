@@ -2,7 +2,6 @@
 #include "gui.h"
 #include <cstdlib>
 
-using namespace std;
 ////////////////////////////////////////
 //********        BOT         ********//
 ////////////////////////////////////////
@@ -54,7 +53,7 @@ void znajdz_ile_statkow(
     statek_sredni = 2 * pole_statkow / domyslna_powierzchnia_statkow;
     statek_maly = pole_statkow / domyslna_powierzchnia_statkow;
 
-    //////////////////////////////////////////////////////////////////
+    /*/////////////////////////////////////////////////////////////////
      cout<<endl<<"Pole planszy: "<<pole_planszy<<endl;
      cout<<"Pole statkow: "<<pole_statkow<<endl;
      cout<<"Faktyczne pole statkow: "<<statek_duzy*4+statek_najwiekszy*5+statek_maly*2+statek_sredni*3<<endl;
@@ -64,129 +63,10 @@ void znajdz_ile_statkow(
      cout<<statek_duzy<<'\t';
      cout<<statek_sredni<<'\t';
      cout<<statek_maly<<endl<<endl;
-
+    /*/
 
 }
 
-//Przeniesc do foldera bot
-void rozstaw_statki_losowo(
-    int szerokosc, int dlugosc,
-    Statek statek[], int rozmiar_statku, Plansza** plansza, int i)
-{
-        //liczniki awaryjne do petli
-        int licznik1 = 0;
-        int licznik2 = 0;
-
-        //rozmiar statku
-        statek[i].rozmiar = rozmiar_statku; //ew. uproscic
-
-        int losuj_szerokosc;
-        int losuj_dlugosc;
-
-        bool wylosowano = false; //flaga losowan
-        while(wylosowano == false && licznik1 <= 10) { //petla losujaca pierwszy punkt statku
-            losuj_szerokosc = rand()%(szerokosc);
-            losuj_dlugosc = rand()%(dlugosc);
-
-            if(plansza[losuj_dlugosc][losuj_szerokosc].statek!=0)
-                wylosowano = false;
-            else wylosowano = true;
-
-            //jesli jest wykonywanych ponad 10 iteracji zakoncz dla bezpieczenstwa petle
-            licznik1++;
-        }
-
-        statek[i].punkt_poczatek[0] = losuj_szerokosc;
-        statek[i].punkt_poczatek[1] = losuj_dlugosc;
-
-        // okresl punkt koncowy statku (najpierw przypisuje go w tym samym punkcie co punkt poczatkowy, nastepnie losuje wymiar do przesuniecia i jesli moze to go przesuwa)
-        statek[i].punkt_koniec[0] = losuj_szerokosc;
-        statek[i].punkt_koniec[1] = losuj_dlugosc;
-
-        int losuj_kierunek{}; //losuj kierunek
-        int wspolczynnik_losowania_zwrot = 1; // okresl zwrot statku - w zaleznosci od polozenia poczatkowego statku
-
-        wylosowano = false;
-        while(!wylosowano) //petla majaca wylosowac w ktora strone statek bedzie obrocony - warunkiem jej zakonczenia jest wybranie kierunku/zwrotu (lub 10 iteracji jako zabezpieczenie)
-        {
-            losuj_kierunek = rand()%2;
-
-            switch(losuj_kierunek) { //w zaleznosci od wybranego kierunku zadecyduj o zwrocie statku, tak zeby miescil sie w planszy (nie nachodzil na inny statek)
-            case 0: // szerokość
-                if (losuj_szerokosc + rozmiar_statku - 1 < szerokosc || losuj_szerokosc - rozmiar_statku + 1 >= 0) {
-                    wspolczynnik_losowania_zwrot = losuj_szerokosc + rozmiar_statku - 1 < szerokosc ? 1 : -1;
-                    wylosowano = true;
-
-                    for (int j = 0; j < rozmiar_statku; j++) {
-                        if (plansza[losuj_dlugosc][losuj_szerokosc + j * wspolczynnik_losowania_zwrot].statek != 0) {
-                            wylosowano = false;
-                            break;
-                        }
-                    }
-                }
-                break;
-            case 1: // długość
-                if (losuj_dlugosc + rozmiar_statku - 1 < dlugosc || losuj_dlugosc - rozmiar_statku + 1 >= 0) {
-                    wspolczynnik_losowania_zwrot = losuj_dlugosc + rozmiar_statku - 1 < dlugosc ? 1 : -1;
-                    wylosowano = true;
-
-                    for (int j = 0; j < rozmiar_statku; j++) {
-                        if (plansza[losuj_dlugosc + j * wspolczynnik_losowania_zwrot][losuj_szerokosc].statek != 0) {
-                            wylosowano = false;
-                            break;
-                        }
-                    }
-                }
-                break;
-/*
-            case 2: // głębokość
-                if (losuj_glebokosc + rozmiar_statku - 1 < glebokosc || losuj_glebokosc - rozmiar_statku + 1 >= 0) {
-                    wspolczynnik_losowania_zwrot = losuj_glebokosc + rozmiar_statku - 1 < glebokosc ? 1 : -1;
-                    wylosowano = true;
-
-                    for (int j = 0; j < rozmiar_statku; j++) {
-                        if (plansza[losuj_glebokosc + j * wspolczynnik_losowania_zwrot][losuj_dlugosc][losuj_szerokosc].statek != 0) {
-                            wylosowano = false;
-                            break;
-                        }
-                    }
-                }
-                break;
-*/
-            }
-            //jesli jest wykonywanych ponad 30 iteracji zakoncz dla bezpieczenstwa petle
-            licznik2++;
-            if(licznik2>30){
-                komunikaty(3); //blad przy losowaniu
-                break;
-            }
-        }
-
-        //przesun punkt kocowy (-1 jest aby nie wliczalo punktu poczatkowego)
-        statek[i].punkt_koniec[losuj_kierunek] += (statek[i].rozmiar-1)*wspolczynnik_losowania_zwrot;
-
-        /*//////////////////////////////////////////////////
-         cout<<endl<<"Poczatek: ";
-         cout<<endl<<statek[i].punkt_poczatek[0]<<'\t';
-         cout<<statek[i].punkt_poczatek[1]<<'\t';
-         cout<<statek[i].punkt_poczatek[2]<<endl;
-         cout<<"Koniec: ";
-         cout<<endl<<statek[i].punkt_koniec[0]<<'\t';
-         cout<<statek[i].punkt_koniec[1]<<'\t';
-         cout<<statek[i].punkt_koniec[2]<<endl<<endl;
-         cout<<endl<<plansza[0][losuj_dlugosc][losuj_szerokosc].statek<<endl;
-        /*/
-}
-
-
-
-void dodaj_statek(int szerokosc, int dlugosc, Statek statek[], int statek_ile, int statek_rozmiar, Plansza**& plansza)
-{
-    for(int i=0; i<statek_ile; i++) {
-        rozstaw_statki_losowo(szerokosc,dlugosc, statek, statek_rozmiar, plansza, i);
-        dodaj_statek_na_plansze(plansza, statek, statek_rozmiar, i);  //../plansza/plansza.h
-    }
-}
 
 //-10 = namierzono inny; -20 = zatopiono;
 //funkcja ktora obsluguje zgadywanie pola po okresleniu kierunku zgadywania
@@ -436,3 +316,318 @@ int* losuj_pole(int szerokosc, int dlugosc,  Plansza** plansza, int ile_zatopion
      /*/
     return pole;
 }
+
+
+
+////////
+
+
+void RozstawStatekRoboczyLosowo(
+    int szerokosc, int dlugosc,
+    StatekRoboczy& statek, Plansza** plansza)
+{
+    //liczniki awaryjne do petli
+    int licznik1 = 0;
+    int licznik2 = 0;
+
+    int rozmiar_statku = statek.Rozmiar();
+
+    int losuj_szerokosc;
+    int losuj_dlugosc;
+
+    bool wylosowano = false; //flaga losowan
+    while(wylosowano == false && licznik1 <= 10) { //petla losujaca pierwszy punkt statku
+        losuj_szerokosc = rand()%(szerokosc);
+        losuj_dlugosc = rand()%(dlugosc);
+
+        if(plansza[losuj_dlugosc][losuj_szerokosc].statek!=0)
+            wylosowano = false;
+        else wylosowano = true;
+
+        //jesli jest wykonywanych ponad 10 iteracji zakoncz dla bezpieczenstwa petle
+        licznik1++;
+    }
+
+    statek.punkt_poczatek[0] = losuj_szerokosc;
+    statek.punkt_poczatek[1] = losuj_dlugosc;
+
+    // okresl punkt koncowy statku (najpierw przypisuje go w tym samym punkcie co punkt poczatkowy, nastepnie losuje wymiar do przesuniecia i jesli moze to go przesuwa)
+    statek.punkt_koniec[0] = losuj_szerokosc;
+    statek.punkt_koniec[1] = losuj_dlugosc;
+
+    int losuj_kierunek{}; //losuj kierunek
+    int wspolczynnik_losowania_zwrot = 1; // okresl zwrot statku - w zaleznosci od polozenia poczatkowego statku
+
+    wylosowano = false;
+    while(!wylosowano) //petla majaca wylosowac w ktora strone statek bedzie obrocony - warunkiem jej zakonczenia jest wybranie kierunku/zwrotu (lub 10 iteracji jako zabezpieczenie)
+    {
+        losuj_kierunek = rand()%2;
+
+        switch(losuj_kierunek) { //w zaleznosci od wybranego kierunku zadecyduj o zwrocie statku, tak zeby miescil sie w planszy (nie nachodzil na inny statek)
+            case 0: // szerokość
+                if (losuj_szerokosc + rozmiar_statku - 1 < szerokosc || losuj_szerokosc - rozmiar_statku + 1 >= 0) {
+                    wspolczynnik_losowania_zwrot = losuj_szerokosc + rozmiar_statku - 1 < szerokosc ? 1 : -1;
+                    wylosowano = true;
+
+                    for (int j = 0; j < rozmiar_statku; j++) {
+                        if (plansza[losuj_dlugosc][losuj_szerokosc + j * wspolczynnik_losowania_zwrot].statek != 0) {
+                            wylosowano = false;
+                            break;
+                        }
+                    }
+                }
+                break;
+            case 1: // długość
+                if (losuj_dlugosc + rozmiar_statku - 1 < dlugosc || losuj_dlugosc - rozmiar_statku + 1 >= 0) {
+                    wspolczynnik_losowania_zwrot = losuj_dlugosc + rozmiar_statku - 1 < dlugosc ? 1 : -1;
+                    wylosowano = true;
+
+                    for (int j = 0; j < rozmiar_statku; j++) {
+                        if (plansza[losuj_dlugosc + j * wspolczynnik_losowania_zwrot][losuj_szerokosc].statek != 0) {
+                            wylosowano = false;
+                            break;
+                        }
+                    }
+                }
+                break;
+        }
+        //jesli jest wykonywanych ponad 30 iteracji zakoncz dla bezpieczenstwa petle
+        licznik2++;
+        if(licznik2>30){
+            komunikaty(3); //blad przy losowaniu
+            break;
+        }
+    }
+
+    //przesun punkt kocowy (-1 jest aby nie wliczalo punktu poczatkowego)
+    statek.punkt_koniec[losuj_kierunek] += (rozmiar_statku-1)*wspolczynnik_losowania_zwrot;
+
+    /*//////////////////////////////////////////////////
+    cout<<endl<<"Poczatek: ";
+    cout<<endl<<statek.punkt_poczatek[0]<<'\t';
+    cout<<statek.punkt_poczatek[1]<<'\n';
+    cout<<"Koniec: ";
+    cout<<endl<<statek.punkt_koniec[0]<<'\t';
+    cout<<statek.punkt_koniec[1]<<"\n\n";
+    cout<<endl<<plansza[losuj_dlugosc][losuj_szerokosc].statek<<endl;
+    /*/
+}
+
+void DodajStatekNaPlansze(Plansza**& plansza, StatekRoboczy& statek)
+{
+    int rozmiar_statku = statek.Rozmiar();
+    int nazwa_statku = rozmiar_statku;
+
+    int punkt_poczatek_s = statek.punkt_poczatek[0];
+    int punkt_poczatek_d = statek.punkt_poczatek[1];
+
+    int punkt_koniec_s = statek.punkt_koniec[0];
+    int punkt_koniec_d = statek.punkt_koniec[1];
+
+    //okresl kierunek i zwrot konca statku
+    int kierunek,zwrot;
+    if((punkt_poczatek_s-punkt_koniec_s)!=0) {
+        kierunek = 0;
+        if((punkt_poczatek_s-punkt_koniec_s)>0)
+            zwrot = -1;
+        else
+            zwrot = 1;
+    }
+    else {
+        kierunek = 1;
+        if((punkt_poczatek_d-punkt_koniec_d)>0)
+            zwrot = -1;
+        else
+            zwrot = 1;
+    }
+
+    //wypelnij statek
+    switch(kierunek)
+    {
+        case 0:
+        if(zwrot == 1)
+            for(int i=0;i<rozmiar_statku;i++){
+                plansza[punkt_poczatek_d][punkt_poczatek_s+i].statek = nazwa_statku;
+            }
+            else
+                for(int i=0;i<rozmiar_statku;i++){
+                    plansza[punkt_poczatek_d][punkt_poczatek_s-i].statek = nazwa_statku;
+                }
+                break;
+
+        case 1:
+        if(zwrot == 1)
+            for(int i=0;i<rozmiar_statku;i++){
+                plansza[punkt_poczatek_d+i][punkt_poczatek_s].statek = nazwa_statku;
+            }
+            else
+                for(int i=0;i<rozmiar_statku;i++){
+                    plansza[punkt_poczatek_d-i][punkt_poczatek_s].statek = nazwa_statku;
+                }
+                break;
+    }
+}
+
+
+void DodajStatki(int szerokosc, int dlugosc, StatekRoboczy statki[], int liczba_statkow ,Plansza**& plansza)
+{
+    for(int i=0; i<liczba_statkow; i++) {
+        RozstawStatekRoboczyLosowo(szerokosc,dlugosc, statki[i], plansza);
+        DodajStatekNaPlansze(plansza, statki[i]);
+    }
+}
+
+
+
+
+
+/*
+
+    //////////////////////////////////////////////////////////
+                        Stare Funkcje
+    //////////////////////////////////////////////////////////
+
+
+
+    //Przeniesc do foldera bot
+    void rozstaw_statki_losowo(
+        int szerokosc, int dlugosc,
+Statek statek[], int rozmiar_statku, Plansza** plansza, int i)
+{
+//liczniki awaryjne do petli
+int licznik1 = 0;
+int licznik2 = 0;
+
+//rozmiar statku
+statek[i].rozmiar = rozmiar_statku; //ew. uproscic
+
+int losuj_szerokosc;
+int losuj_dlugosc;
+
+bool wylosowano = false; //flaga losowan
+while(wylosowano == false && licznik1 <= 10) { //petla losujaca pierwszy punkt statku
+    losuj_szerokosc = rand()%(szerokosc);
+    losuj_dlugosc = rand()%(dlugosc);
+
+    if(plansza[losuj_dlugosc][losuj_szerokosc].statek!=0)
+        wylosowano = false;
+    else wylosowano = true;
+
+    //jesli jest wykonywanych ponad 10 iteracji zakoncz dla bezpieczenstwa petle
+    licznik1++;
+    }
+
+    statek[i].punkt_poczatek[0] = losuj_szerokosc;
+    statek[i].punkt_poczatek[1] = losuj_dlugosc;
+
+    // okresl punkt koncowy statku (najpierw przypisuje go w tym samym punkcie co punkt poczatkowy, nastepnie losuje wymiar do przesuniecia i jesli moze to go przesuwa)
+    statek[i].punkt_koniec[0] = losuj_szerokosc;
+    statek[i].punkt_koniec[1] = losuj_dlugosc;
+
+    int losuj_kierunek{}; //losuj kierunek
+    int wspolczynnik_losowania_zwrot = 1; // okresl zwrot statku - w zaleznosci od polozenia poczatkowego statku
+
+    wylosowano = false;
+    while(!wylosowano) //petla majaca wylosowac w ktora strone statek bedzie obrocony - warunkiem jej zakonczenia jest wybranie kierunku/zwrotu (lub 10 iteracji jako zabezpieczenie)
+    {
+    losuj_kierunek = rand()%2;
+
+    switch(losuj_kierunek) { //w zaleznosci od wybranego kierunku zadecyduj o zwrocie statku, tak zeby miescil sie w planszy (nie nachodzil na inny statek)
+        case 0: // szerokość
+            if (losuj_szerokosc + rozmiar_statku - 1 < szerokosc || losuj_szerokosc - rozmiar_statku + 1 >= 0) {
+                wspolczynnik_losowania_zwrot = losuj_szerokosc + rozmiar_statku - 1 < szerokosc ? 1 : -1;
+                wylosowano = true;
+
+                for (int j = 0; j < rozmiar_statku; j++) {
+                    if (plansza[losuj_dlugosc][losuj_szerokosc + j * wspolczynnik_losowania_zwrot].statek != 0) {
+                        wylosowano = false;
+                        break;
+                        }
+                        }
+                        }
+                        break;
+        case 1: // długość
+            if (losuj_dlugosc + rozmiar_statku - 1 < dlugosc || losuj_dlugosc - rozmiar_statku + 1 >= 0) {
+                wspolczynnik_losowania_zwrot = losuj_dlugosc + rozmiar_statku - 1 < dlugosc ? 1 : -1;
+                wylosowano = true;
+
+                for (int j = 0; j < rozmiar_statku; j++) {
+                    if (plansza[losuj_dlugosc + j * wspolczynnik_losowania_zwrot][losuj_szerokosc].statek != 0) {
+                        wylosowano = false;
+                        break;
+                        }
+                        }
+                        }
+                        break;
+                        }
+                        //jesli jest wykonywanych ponad 30 iteracji zakoncz dla bezpieczenstwa petle
+                        licznik2++;
+                        if(licznik2>30){
+                            komunikaty(3); //blad przy losowaniu
+                            break;
+                        }
+                        }
+
+                        //przesun punkt kocowy (-1 jest aby nie wliczalo punktu poczatkowego)
+                        statek[i].punkt_koniec[losuj_kierunek] += (statek[i].rozmiar-1)*wspolczynnik_losowania_zwrot;
+
+                        //////////////////////////////////////////////////
+                        cout<<endl<<"Poczatek: ";
+                        cout<<endl<<statek[i].punkt_poczatek[0]<<'\t';
+                        cout<<statek[i].punkt_poczatek[1]<<'\t';
+                        cout<<statek[i].punkt_poczatek[2]<<endl;
+                        cout<<"Koniec: ";
+                        cout<<endl<<statek[i].punkt_koniec[0]<<'\t';
+                        cout<<statek[i].punkt_koniec[1]<<'\t';
+                        cout<<statek[i].punkt_koniec[2]<<endl<<endl;
+                        cout<<endl<<plansza[0][losuj_dlugosc][losuj_szerokosc].statek<<endl;
+                        //
+                        }
+
+
+
+                        void dodaj_statek(int szerokosc, int dlugosc, Statek statek[], int statek_ile, int statek_rozmiar, Plansza**& plansza)
+                        {
+                            for(int i=0; i<statek_ile; i++) {
+                                rozstaw_statki_losowo(szerokosc,dlugosc, statek, statek_rozmiar, plansza, i);
+                                dodaj_statek_na_plansze(plansza, statek, statek_rozmiar, i);  //../plansza/plansza.h
+                            }
+                        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ */

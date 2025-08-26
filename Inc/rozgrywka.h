@@ -6,6 +6,8 @@
 
 // using std::string;
 
+#define LICZBA_TYPOW_STATKOW  4
+
 // STRUKTURY //
 
 struct Plansza; //deklaracja wstepna planszy
@@ -35,26 +37,22 @@ struct Ruchy  {
   Struktura definiująca statek umieszczany na planszy - koordynaty jego punktów skrajnych, rozmiar oraz liczbę pól które nie zostały jeszcze zatopione
 */
 ///Definiuje statek umieszczany na planszy
-struct Statek {
-    /// pierwszy punkt w którym umieszczony jest statek
-    int punkt_poczatek[2];
-    /// ostatni punkt w którym umieszczony jest statek
-    int punkt_koniec[2];
-    /// rozmiar statku - liczba pól jaką zajmował będzie na planszy
-    int rozmiar;
-    /// liczba pól które nie zostały jeszcze zatopione przez przeciwnika
-    int pozostale_pola;
-};
+/*/ struct Statek {
+//     /// pierwszy punkt w którym umieszczony jest statek
+//     int punkt_poczatek[2];
+//     /// ostatni punkt w którym umieszczony jest statek
+//     int punkt_koniec[2];
+//     /// rozmiar statku - liczba pól jaką zajmował będzie na planszy
+//     int rozmiar;
+//     /// liczba pól które nie zostały jeszcze zatopione przez przeciwnika
+//     int pozostale_pola;
+ }; /*/
 
 
 class StatekRoboczy {
   private:
     //informacje o polozeniu statku
 
-    /// pierwszy punkt w którym umieszczony jest statek
-    int punkt_poczatek[2];
-    /// ostatni punkt w którym umieszczony jest statek
-    int punkt_koniec[2];
     /// rozmiar statku - liczba pól jaką zajmował będzie na planszy
     int rozmiar;
     /// liczba pól które nie zostały jeszcze zatopione przez przeciwnika
@@ -67,7 +65,12 @@ class StatekRoboczy {
       void UstawRozmiar(int r);
       void Trafienie();
       bool CzyZatopiony() const;
+      int Rozmiar() const;
 
+      /// pierwszy punkt w którym umieszczony jest statek
+      int punkt_poczatek[2];
+      /// ostatni punkt w którym umieszczony jest statek
+      int punkt_koniec[2];
 
       // ~Statek();
 };
@@ -93,18 +96,7 @@ class UzytkownikRoboczy {
      Dodac klasy czlowiek i bot, dziedziczace po uzytkownik, rozniace sie np. metoda zgadywania i zachowaniem, usunac Player_Info
      */
 };
-/*
- *
- */
-struct Player_Info {
-  Uzytkownik numer_gracza;
-  Plansza** plansza;
-  int pozostale_statki;
-  int statek_najwiekszy_ile, statek_duzy_ile, statek_sredni_ile, statek_maly_ile;
-  // Statek najwiekszy1[statek_najwiekszy_ile], duzy1[statek_duzy_ile], sredni1[statek_sredni_ile], maly1[statek_maly_ile];
-  int szerokosc, dlugosc, glebokosc;
-  int ile_zatopiono;
-};
+
 
 // Funkcje do obsługi rozgrywki//
 
@@ -117,7 +109,8 @@ int rozgrywka();
 /**
   Funkcja w której odbywa się rozgrywka - użytkownicy podają swoje pola, pole jest sprawdzane, przyznawana jest kolejka.
 */
-void gra(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza** plansza_gracz2, int& pozostale_statki_gracz1, int& pozostale_statki_gracz2, Statek najwiekszy1[], Statek duzy1[], Statek sredni1[], Statek maly1[], Statek najwiekszy2[], Statek duzy2[], Statek sredni2[], Statek maly2[], int* liczba_statkow_arr, int szerokosc, int dlugosc, int& ile_zatopiono_gracz1, int& ile_zatopiono_gracz2, bool czy_widoczne);
+void Gra(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza** plansza_gracz2, int& pozostale_statki_gracz1, int& pozostale_statki_gracz2, StatekRoboczy statki_gracz1[], StatekRoboczy statki_gracz2[], int liczba_statkow, int szerokosc, int dlugosc, int& ile_zatopiono_gracz1, int& ile_zatopiono_gracz2, bool czy_widoczne);
+// void gra(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza** plansza_gracz2, int& pozostale_statki_gracz1, int& pozostale_statki_gracz2, Statek najwiekszy1[], Statek duzy1[], Statek sredni1[], Statek maly1[], Statek najwiekszy2[], Statek duzy2[], Statek sredni2[], Statek maly2[], int* liczba_statkow_arr, int szerokosc, int dlugosc, int& ile_zatopiono_gracz1, int& ile_zatopiono_gracz2, bool czy_widoczne);
 
 
 //
@@ -129,10 +122,12 @@ void UtworzStatkiGracza(StatekRoboczy* statki_arr, int* liczba_statkow_arr);
 int* metoda_zgadywania(int S,int D, Uzytkownik gracz, Plansza** plansza, int& ile_zatopiono);
 
 /// Funkcja sprawdzająca, czy na podanym polu planszy znajduje się jakiś statek - zwraca true, jeśli go znajdzie.
-bool sprawdz_pole(Statek najwiekszy[], Statek duzy[], Statek sredni[], Statek maly[], int zgadywane_pole[], Plansza** plansza, int statek_najwiekszy_ile, int statek_duzy_ile, int statek_sredni_ile, int statek_maly_ile, int& pozostale_statki, int& ile_zatopiono);
+bool SprawdzPole(StatekRoboczy statki[], int zgadywane_pole[], Plansza** plansza, int liczba_statkow, int& pozostale_statki, int& ile_zatopiono);
+// bool sprawdz_pole(Statek najwiekszy[], Statek duzy[], Statek sredni[], Statek maly[], int zgadywane_pole[], Plansza** plansza, int statek_najwiekszy_ile, int statek_duzy_ile, int statek_sredni_ile, int statek_maly_ile, int& pozostale_statki, int& ile_zatopiono);
 
 /// Funkcja przyjmuje jako parametr zgadywany punkt i wszystkie statki, sprawdza czy, jaki statek znajduje sie pod takim polem
-bool czy_trafiony(Statek statek[], int statek_ile, Plansza** plansza, int& pozostale_statki, int S, int D, int& ile_zatopiono);
+bool CzyTrafiony(StatekRoboczy statek, int& pozostale_statki, int S, int D, int& ile_zatopiono);
+// bool czy_trafiony(Statek statek[], int statek_ile, Plansza** plansza, int& pozostale_statki, int S, int D, int& ile_zatopiono);
 
 
 // obsluga listy ruchow //

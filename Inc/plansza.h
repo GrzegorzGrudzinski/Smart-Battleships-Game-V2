@@ -5,7 +5,7 @@
 #include "rozgrywka.h"
 
 
-struct Statek;//deklaracja wstepna
+// struct Statek;//deklaracja wstepna
 
 /**
     Struktura tworząca pole planszy - zawiera informację o tym, czy komórka zawiera statek i czy została już podana przez użytkownika
@@ -35,11 +35,11 @@ void usun_plansze(Plansza**& plansza, int D);
 /**
     Funkcja mająca oznaczyć pola planszy na których został umieszczony statek jako zajęte.
  */
-void dodaj_statek_na_plansze(Plansza**& plansza, Statek statek[],int rozmiar_statku, int numer_statku);
+// void dodaj_statek_na_plansze(Plansza**& plansza, Statek statek[],int rozmiar_statku, int numer_statku);
 
 /**
     Funkcja mająca wyzerować oznaczenie pola planszy na których został umieszczony statek
  */
-void usun_statek(Plansza**& plansza, Statek statek[], int rozmiar_statku, int numer_statku);
+// void usun_statek(Plansza**& plansza, Statek statek[], int rozmiar_statku, int numer_statku);
 
 #endif // PLANSZA_H
