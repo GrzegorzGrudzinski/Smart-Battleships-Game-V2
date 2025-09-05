@@ -3,6 +3,8 @@
 
 #include <cstring>
 #include "plansza.h"
+#include "my_list.h"
+#include "my_vector.h"
 
 // using std::string;
 

@@ -2,6 +2,8 @@
 #ifndef PLANSZA_H
 #define PLANSZA_H
 
+#include "my_list.h"
+#include "my_vector.h"
 #include "rozgrywka.h"
 
 

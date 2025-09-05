@@ -2,7 +2,11 @@ cmake_minimum_required(VERSION 3.5)
 
 project(statki)
 
-include_directories(Inc)
+# add_subdirectory(Data_Structures/)
+include_directories(
+    Inc
+    Data_Structures/Inc
+)
 
 set(SOURCE_FILES
     Src/bot.cpp
