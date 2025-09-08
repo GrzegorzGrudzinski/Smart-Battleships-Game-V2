@@ -159,8 +159,6 @@ void dodaj_ruch(my_list<Ruchy>& lista_ruchow, Plansza** plansza_gracz, int numer
     temp.plansza = kopia;
     for(int i=0; i < 2; i++)
         temp.uzyte_pole[i] = uzyte_pole[i];
-    temp.D = D;
-    temp.S = S;
 
     lista_ruchow.push_back(temp);
 }
@@ -213,7 +211,7 @@ void Gra(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza
     StatekRoboczy* aktywne_statki = statki_gracz1;
 
     bool czy_gra_zakonczona = false;
-    bool warunek = false;
+    bool warunek_zakonczenia = false;
     bool temp = false; // false - kolejka uz1, true - uz2
     bool warunek_wpisywania = false;
 
@@ -225,7 +223,7 @@ void Gra(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza
 
     while(!czy_gra_zakonczona) {
         //petla do zgadywania pola - zamienia uzytkownika
-        while(!warunek){
+        while(!warunek_zakonczenia){
             komunikat_przed(temp_poprzedni_ruch_u2, gracz.numer);
             wypisz_wierszami(plansza_gracz1,dlugosc,szerokosc, czy_widoczne);
             wypisz_wierszami(plansza_gracz2,dlugosc,szerokosc, czy_widoczne);
@@ -292,7 +290,7 @@ void Gra(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza
 
             //jesli uzytkownik nie trafil zamien kolejke
             if(!SprawdzPole(aktywne_statki, zgadywane_pole, aktywna_plansza, liczba_statkow, pozostale_statki_aktywny_gracz, ile_zatopiono_aktywne)) {
-                warunek = true;
+                warunek_zakonczenia= true;
             }
             komunikat_po(aktywna_plansza, zgadywane_pole, pozostale_statki_aktywny_gracz);
             // std::cout << "Pozostale statki: " << pozostale_statki_aktywny_gracz << std::endl;
@@ -300,7 +298,8 @@ void Gra(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza
             delete[] zgadywane_pole;
             zgadywane_pole = nullptr;
         }
-        if(!koniec_gry_temp) {//kiedy zgadywane pole zwrocilo kod esc zakoncz gre
+
+        if(!koniec_gry_temp) {//kiedy zgadywane pole zwrocilo kod esc zakoncz gre, jesli nie to zmien kolejke
             //zmiana parametrow po zmianie aktywnego uzytkownika
             if(!temp) {
                 aktywne_statki = statki_gracz2;
@@ -308,7 +307,7 @@ void Gra(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza
                 aktywna_plansza = plansza_gracz2;
                 pozostale_statki_aktywny_gracz = pozostale_statki_gracz2;
                 ile_zatopiono_aktywne = ile_zatopiono_gracz2;
-                warunek = false;
+                warunek_zakonczenia = false;
                 temp = true;
             }
             else {
@@ -317,17 +316,17 @@ void Gra(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza
                 aktywna_plansza = plansza_gracz1;
                 pozostale_statki_aktywny_gracz = pozostale_statki_gracz1;
                 ile_zatopiono_aktywne = ile_zatopiono_gracz1;
-                warunek = false;
+                warunek_zakonczenia = false;
                 temp = false;
             }
 
             // wypisz_ruchy(lista_ruchow,glebokosc,dlugosc,szerokosc);
-            zapisz_liste_ruchow(lista_ruchow,dlugosc,szerokosc);
+            zapisz_liste_ruchow(lista_ruchow);
         }
 
         //sprawdzic czy wszystkie statki trafione - warunek zakonczenia rozgrywki(petli glownej)
         if(pozostale_statki_gracz1 == 0 || pozostale_statki_gracz2 == 0 || koniec_gry_temp) { //czy uzytkownik chce zakonczyc?
-            warunek = true;
+            warunek_zakonczenia = true;
             czy_gra_zakonczona = true;
 
             usun_liste(lista_ruchow);

@@ -189,10 +189,10 @@ bool otworz_plik_ustawienia(int& x,int& y, int& uzytkownik1_rodzaj, int& uzytkow
     }
 }
 
-void zapisz_liste_ruchow(my_list<Ruchy>& lista_ruchow, int D, int S)
+void zapisz_liste_ruchow(my_list<Ruchy>& lista_ruchow)
 {
     if(lista_ruchow.get_size() == 0){ //sprawdz czy nie zostala przekazana pusta lista
-        cout<<"Pusta lista"<<endl;
+        cout<<"\nPusta lista"<<endl;
         return;
     }
 
@@ -205,11 +205,11 @@ void zapisz_liste_ruchow(my_list<Ruchy>& lista_ruchow, int D, int S)
     else {  //jesli plik zostal poprawnie otwarty to zapisz w nim liste ruchow
 
         for (const Ruchy& data : lista_ruchow){
-            plik_lista_zapis << "\n*** Ruch numer: " <<  data.numer_ruchu << "\n";
-            plik_lista_zapis << "Gracz: "<< data.uzytkownik <<'\n';
+            plik_lista_zapis << "\n*** Ruch numer: " <<  data.numer_ruchu << " ***";
+            plik_lista_zapis << "\nGracz: "<< data.uzytkownik <<'\n';
 
             if (data.plansza.get_size() == 0) {
-                std::cerr<<"NULLPTR!!!"<<endl;
+                std::cerr<<"\nNULLPTR!!!"<<endl;
             }
             else {
                 //zapisz plansze
@@ -226,14 +226,13 @@ void zapisz_liste_ruchow(my_list<Ruchy>& lista_ruchow, int D, int S)
                         else {
                             plik_lista_zapis << std::setw(3) << komorka.statek;
                         }
-                    }
+                    } //for komorka
                     plik_lista_zapis << "\n";
-
-                }
+                } //for wiersz
             }
 
-            plik_lista_zapis << "Uzyte pole: ";
-            for(int i=0; i<=2; i++)
+            plik_lista_zapis << "\nUzyte pole: ";
+            for(int i=0; i<2; i++)
                 plik_lista_zapis << data.uzyte_pole[i]<< "\t";
             plik_lista_zapis << "\n";
         }

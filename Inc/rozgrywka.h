@@ -29,10 +29,7 @@ struct Ruchy  {
     // Plansza** plansza; //kopia planszy w wezle( kto mial ruch, trafil czy nie)
     my_vector<my_vector<Plansza>> plansza;
 
-
-    // pola do przechowywania wymiarów planszy
-    int D;  ///dlugosc planszy
-    int S;  ///szerokosc planszy
+    bool czy_zatopiono = false;
 };
 
 
