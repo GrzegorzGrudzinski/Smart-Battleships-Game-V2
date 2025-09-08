@@ -88,6 +88,9 @@ int rozgrywka()
     // int statek_sredni_ile;
     // int statek_maly_ile;
 
+
+    /****** Ustawienia statkow ******/
+
     int liczba_statkow_arr[LICZBA_TYPOW_STATKOW]; // 4 rozmiary statkow
     /*
      0 - najwiekszy (5)
@@ -105,7 +108,6 @@ int rozgrywka()
     int ile_zatopiono_gracz1{}, ile_zatopiono_gracz2{};
 
 
-
     StatekRoboczy* statki_gracz1 = new StatekRoboczy [poczatkowa_liczba_statkow];
     UtworzStatkiGracza(statki_gracz1, liczba_statkow_arr);
 
@@ -116,26 +118,308 @@ int rozgrywka()
     DodajStatki(S, D, statki_gracz2, poczatkowa_liczba_statkow, plansza_gracz2);
 
 
-    //rozgrywka
+    /****** Rozgrywka ******/
     Gra(gracz1,gracz2,plansza_gracz1,plansza_gracz2, pozostale_statki_gracz1, pozostale_statki_gracz2, statki_gracz1, statki_gracz2, poczatkowa_liczba_statkow, S, D, ile_zatopiono_gracz1, ile_zatopiono_gracz2, czy_widoczne);
 
-    // zwolnij miejsce po rozgrywce
-    // for(int i=0; i<liczba_statkow_arr[0]; i++)
-    //     usun_statek(plansza_gracz1, statek_najwiekszy, statek_najwiekszy->rozmiar, i);
-    //
-    // for(int i=0; i<liczba_statkow_arr[0]; i++)
-    //     usun_statek(plansza_gracz2, statek_najwiekszy2, statek_najwiekszy2->rozmiar, i);
+    Gra gra()
 
-
+    /****** Czyszczenie po zakonczeniu rozgrywki ******/
     delete [] statki_gracz1; // StatekRoboczy
     delete [] statki_gracz2; // StatekRoboczy
 
     usun_plansze(plansza_gracz1,D);
     usun_plansze(plansza_gracz2,D);
-    // cout<<statek_duzy->rozmiar;
 
     return 0;
 }
+
+
+// //Petla rozgrywki
+// // void Gra(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza** plansza_gracz2, int& pozostale_statki_gracz1, int& pozostale_statki_gracz2, StatekRoboczy statki_gracz1[], StatekRoboczy statki_gracz2[], int liczba_statkow, int szerokosc, int dlugosc, int& ile_zatopiono_gracz1, int& ile_zatopiono_gracz2, bool czy_widoczne)
+// {
+//     /****** Poczatkowe ustawienia ******/
+//
+//     // zaczyna gracz 1
+//     Uzytkownik gracz = gracz1;   //
+//     int pozostale_statki_aktywny_gracz = pozostale_statki_gracz1;
+//     int ile_zatopiono_aktywne = ile_zatopiono_gracz1;
+//     Plansza** aktywna_plansza = plansza_gracz1; //
+//     StatekRoboczy* aktywne_statki = statki_gracz1;
+//
+//     // obsluga sledzenia ruchow
+//     my_list<Ruchy> lista_ruchow;
+//     int temp_poprzedni_ruch_u1[2]{};
+//     int temp_poprzedni_ruch_u2[2]{};
+//
+//     // flagi do obslugi rozgrywki
+//     bool czy_gra_zakonczona = false;
+//     bool warunek_zakonczenia_tury = false;
+//     bool czyja_kolejka = false; // false - kolejka uz1, true - uz2
+//     bool warunek_wpisywania = false;
+//     bool koniec_gry_temp = false;
+//
+//
+//     while(!czy_gra_zakonczona) {
+//         //petla do zgadywania pola - zamienia uzytkownika
+//         while(!warunek_zakonczenia_tury){
+//             komunikat_przed(temp_poprzedni_ruch_u2, gracz.numer);
+//
+//             // wypisz plansze
+//             wypisz_wierszami(plansza_gracz1,dlugosc,szerokosc, czy_widoczne);
+//             wypisz_wierszami(plansza_gracz2,dlugosc,szerokosc, czy_widoczne);
+//
+//
+//             /****** ZGADYWANIE POLA (TODO zastopic to funkcja) ******/
+//
+//             //zmienna przechowujaca jako tablica koordynaty zgadywanego pola - [szerokosc][dlugosc] - tu jest konfigurowana przed dzialaniem petli, gdzie jest aktualizowana
+//             int* zgadywane_pole = metoda_zgadywania(szerokosc,dlugosc,gracz,aktywna_plansza, ile_zatopiono_aktywne);
+//
+//             // najpierw sprawdzamy czy podane pole jest poprawne (-10 - blad)
+//             if (zgadywane_pole[0] == -10 || zgadywane_pole[1] == -10 ) { // error
+//                 koniec_gry_temp = true;
+//                 delete[] zgadywane_pole;
+//                 zgadywane_pole = nullptr;
+//                 break;
+//             }
+//
+//             // sprawdz czy pole jest juz uzyte - jesli nie to je tak oznacz
+//             if(aktywna_plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte==true) {
+//                 warunek_wpisywania = false;
+//                 komunikaty(2); // pole juz uzyte
+//             }
+//             else{
+//                 warunek_wpisywania = true;
+//                 aktywna_plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte=true;
+//             }
+//             // zgadywanie pola jesli nie powiodlo sie za pierwszym razem
+//             while(!warunek_wpisywania) {
+//                 // pole
+//                 zgadywane_pole = metoda_zgadywania(szerokosc,dlugosc, gracz, aktywna_plansza, ile_zatopiono_aktywne);
+//
+//                 if (zgadywane_pole[0] == -10 || zgadywane_pole[1] == -10) {
+//                     koniec_gry_temp = true;
+//                     delete[] zgadywane_pole;
+//                     zgadywane_pole = nullptr;
+//                     break;
+//                 }
+//
+//                 if(aktywna_plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte==true) {
+//                     warunek_wpisywania = false;
+//                     komunikaty(2); //pole juz uzyte
+//                 }
+//                 else{
+//                     warunek_wpisywania = true;
+//                     aktywna_plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte=true;
+//                 }
+//             }
+//             if (koniec_gry_temp) { // zakoncz rozgywke jesli byl blad / uzytkownik chce
+//                 break;
+//             }
+//
+//             /****** DZIALANIA PO PODANIU POLA ******/
+//
+//             // OBSLUGA SLEDZENIA RUCHOW
+//             static int nr_ruchu=0;
+//             //zapisz uzyte pole kazdego uzytkownika
+//             if(!czyja_kolejka) {
+//                 temp_poprzedni_ruch_u1[0] = zgadywane_pole[0];
+//                 temp_poprzedni_ruch_u1[1] = zgadywane_pole[1];
+//
+//                 dodaj_ruch(lista_ruchow, plansza_gracz1, nr_ruchu, temp_poprzedni_ruch_u1, 1 ,dlugosc,szerokosc);
+//             }
+//             else {
+//                 temp_poprzedni_ruch_u2[0] = zgadywane_pole[0];
+//                 temp_poprzedni_ruch_u2[1] = zgadywane_pole[1];
+//
+//                 dodaj_ruch(lista_ruchow, plansza_gracz2, nr_ruchu, temp_poprzedni_ruch_u2, 2, dlugosc,szerokosc);
+//             }
+//             nr_ruchu++;
+//
+//
+//             //jesli uzytkownik nie trafil zamien kolejke
+//             if(!SprawdzPole(aktywne_statki, zgadywane_pole, aktywna_plansza, liczba_statkow, pozostale_statki_aktywny_gracz, ile_zatopiono_aktywne)) {
+//                 warunek_zakonczenia_tury= true;
+//             }
+//             komunikat_po(aktywna_plansza, zgadywane_pole, pozostale_statki_aktywny_gracz);
+//             // std::cout << "Pozostale statki: " << pozostale_statki_aktywny_gracz << std::endl;
+//
+//             delete[] zgadywane_pole;
+//             zgadywane_pole = nullptr;
+//         }
+//
+//         /****** ZAMIANA KOLEJKI  ******/
+//         if(!koniec_gry_temp) {//kiedy zgadywane pole zwrocilo kod esc zakoncz gre, jesli nie to zmien kolejke
+//             //zmiana parametrow po zmianie aktywnego uzytkownika
+//             if(!czyja_kolejka) {
+//                 aktywne_statki = statki_gracz2;
+//                 gracz = gracz2;
+//                 aktywna_plansza = plansza_gracz2;
+//                 pozostale_statki_aktywny_gracz = pozostale_statki_gracz2;
+//                 ile_zatopiono_aktywne = ile_zatopiono_gracz2;
+//                 warunek_zakonczenia_tury = false;
+//                 czyja_kolejka= true;
+//             }
+//             else {
+//                 aktywne_statki = statki_gracz1;
+//                 gracz = gracz1;
+//                 aktywna_plansza = plansza_gracz1;
+//                 pozostale_statki_aktywny_gracz = pozostale_statki_gracz1;
+//                 ile_zatopiono_aktywne = ile_zatopiono_gracz1;
+//                 warunek_zakonczenia_tury = false;
+//                 czyja_kolejka= false;
+//             }
+//
+//             // PO SKONCZONEJ KOLEJCE ZAPISZ RUCHY DO PLIKU
+//             zapisz_liste_ruchow(lista_ruchow);
+//             // wypisz_ruchy(lista_ruchow,glebokosc,dlugosc,szerokosc); // FOR DEBUGGING
+//         }
+//
+//         //sprawdzic czy wszystkie statki trafione - warunek zakonczenia rozgrywki(petli glownej)
+//         if(pozostale_statki_gracz1 == 0 || pozostale_statki_gracz2 == 0 || koniec_gry_temp) { //czy uzytkownik chce zakonczyc?
+//             warunek_zakonczenia_tury = true;
+//             czy_gra_zakonczona = true;
+//
+//             usun_liste(lista_ruchow);
+//         }
+//     }
+// }
+
+// TODO powiazac parametry takie jak statki, plansza z uzytkownikiem
+Gra::Gra(Uzytkownik gracz, int ilosc_statkow, Plansza** plansza, StatekRoboczy* statki_gracza)  :
+    gracz(gracz), pozostale_statki_aktywny_gracz(ilosc_statkow), ile_zatopiono_aktywne(0), aktywna_plansza (plansza), aktywne_statki(statki_gracza),
+    czy_gra_zakonczona(false), warunek_zakonczenia_tury(false), czyja_kolejka(false), warunek_wpisywania(false), koniec_gry_temp(false)
+{}
+
+
+void Gra::graj(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza** plansza_gracz2, int& pozostale_statki_gracz1, int& pozostale_statki_gracz2, StatekRoboczy statki_gracz1[], StatekRoboczy statki_gracz2[], int liczba_statkow, int szerokosc, int dlugosc, int& ile_zatopiono_gracz1, int& ile_zatopiono_gracz2, bool czy_widoczne)
+{
+    while(!czy_gra_zakonczona) {
+        //petla do zgadywania pola - zamienia uzytkownika
+        while(!warunek_zakonczenia_tury){
+            komunikat_przed(temp_poprzedni_ruch_u2, gracz.numer);
+
+            // wypisz plansze
+            wypisz_wierszami(plansza_gracz1,dlugosc,szerokosc, czy_widoczne);
+            wypisz_wierszami(plansza_gracz2,dlugosc,szerokosc, czy_widoczne);
+
+
+            /****** ZGADYWANIE POLA (TODO zastopic to funkcja) ******/
+
+            //zmienna przechowujaca jako tablica koordynaty zgadywanego pola - [szerokosc][dlugosc] - tu jest konfigurowana przed dzialaniem petli, gdzie jest aktualizowana
+            int* zgadywane_pole = metoda_zgadywania(szerokosc,dlugosc,gracz,aktywna_plansza, ile_zatopiono_aktywne);
+
+            // najpierw sprawdzamy czy podane pole jest poprawne (-10 - blad)
+            if (zgadywane_pole[0] == -10 || zgadywane_pole[1] == -10 ) { // error
+                koniec_gry_temp = true;
+                delete[] zgadywane_pole;
+                zgadywane_pole = nullptr;
+                break;
+            }
+
+            // sprawdz czy pole jest juz uzyte - jesli nie to je tak oznacz
+            if(aktywna_plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte==true) {
+                warunek_wpisywania = false;
+                komunikaty(2); // pole juz uzyte
+            }
+            else{
+                warunek_wpisywania = true;
+                aktywna_plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte=true;
+            }
+            // zgadywanie pola jesli nie powiodlo sie za pierwszym razem
+            while(!warunek_wpisywania) {
+                // pole
+                zgadywane_pole = metoda_zgadywania(szerokosc,dlugosc, gracz, aktywna_plansza, ile_zatopiono_aktywne);
+
+                if (zgadywane_pole[0] == -10 || zgadywane_pole[1] == -10) {
+                    koniec_gry_temp = true;
+                    delete[] zgadywane_pole;
+                    zgadywane_pole = nullptr;
+                    break;
+                }
+
+                if(aktywna_plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte==true) {
+                    warunek_wpisywania = false;
+                    komunikaty(2); //pole juz uzyte
+                }
+                else{
+                    warunek_wpisywania = true;
+                    aktywna_plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte=true;
+                }
+            }
+            if (koniec_gry_temp) { // zakoncz rozgywke jesli byl blad / uzytkownik chce
+                break;
+            }
+
+            /****** DZIALANIA PO PODANIU POLA ******/
+
+            // OBSLUGA SLEDZENIA RUCHOW
+            static int nr_ruchu=0;
+            //zapisz uzyte pole kazdego uzytkownika
+            if(!czyja_kolejka) {
+                temp_poprzedni_ruch_u1[0] = zgadywane_pole[0];
+                temp_poprzedni_ruch_u1[1] = zgadywane_pole[1];
+
+                dodaj_ruch(lista_ruchow, plansza_gracz1, nr_ruchu, temp_poprzedni_ruch_u1, 1 ,dlugosc,szerokosc);
+            }
+            else {
+                temp_poprzedni_ruch_u2[0] = zgadywane_pole[0];
+                temp_poprzedni_ruch_u2[1] = zgadywane_pole[1];
+
+                dodaj_ruch(lista_ruchow, plansza_gracz2, nr_ruchu, temp_poprzedni_ruch_u2, 2, dlugosc,szerokosc);
+            }
+            nr_ruchu++;
+
+
+            //jesli uzytkownik nie trafil zamien kolejke
+            if(!SprawdzPole(aktywne_statki, zgadywane_pole, aktywna_plansza, liczba_statkow, pozostale_statki_aktywny_gracz, ile_zatopiono_aktywne)) {
+                warunek_zakonczenia_tury= true;
+            }
+            komunikat_po(aktywna_plansza, zgadywane_pole, pozostale_statki_aktywny_gracz);
+            // std::cout << "Pozostale statki: " << pozostale_statki_aktywny_gracz << std::endl;
+
+            delete[] zgadywane_pole;
+            zgadywane_pole = nullptr;
+        }
+
+        /****** ZAMIANA KOLEJKI  ******/
+        if(!koniec_gry_temp) {//kiedy zgadywane pole zwrocilo kod esc zakoncz gre, jesli nie to zmien kolejke
+            //zmiana parametrow po zmianie aktywnego uzytkownika
+            if(!czyja_kolejka) {
+                aktywne_statki = statki_gracz2;
+                gracz = gracz2;
+                aktywna_plansza = plansza_gracz2;
+                pozostale_statki_aktywny_gracz = pozostale_statki_gracz2;
+                ile_zatopiono_aktywne = ile_zatopiono_gracz2;
+                warunek_zakonczenia_tury = false;
+                czyja_kolejka= true;
+            }
+            else {
+                aktywne_statki = statki_gracz1;
+                gracz = gracz1;
+                aktywna_plansza = plansza_gracz1;
+                pozostale_statki_aktywny_gracz = pozostale_statki_gracz1;
+                ile_zatopiono_aktywne = ile_zatopiono_gracz1;
+                warunek_zakonczenia_tury = false;
+                czyja_kolejka= false;
+            }
+
+            // PO SKONCZONEJ KOLEJCE ZAPISZ RUCHY DO PLIKU
+            zapisz_liste_ruchow(lista_ruchow);
+            // wypisz_ruchy(lista_ruchow,glebokosc,dlugosc,szerokosc); // FOR DEBUGGING
+        }
+
+        //sprawdzic czy wszystkie statki trafione - warunek zakonczenia rozgrywki(petli glownej)
+        if(pozostale_statki_gracz1 == 0 || pozostale_statki_gracz2 == 0 || koniec_gry_temp) { //czy uzytkownik chce zakonczyc?
+            warunek_zakonczenia_tury = true;
+            czy_gra_zakonczona = true;
+
+            usun_liste(lista_ruchow);
+        }
+    }
+
+}
+
+
 
 
 // obsluga listy ruchow //
@@ -199,143 +483,6 @@ bool SprawdzPole(StatekRoboczy statki[], int zgadywane_pole[], Plansza** plansza
     else
         return false;
 }
-
-
-//Petla rozgrywki
-void Gra(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza** plansza_gracz2, int& pozostale_statki_gracz1, int& pozostale_statki_gracz2, StatekRoboczy statki_gracz1[], StatekRoboczy statki_gracz2[], int liczba_statkow, int szerokosc, int dlugosc, int& ile_zatopiono_gracz1, int& ile_zatopiono_gracz2, bool czy_widoczne)
-{
-    Uzytkownik gracz = gracz1;   //
-    int pozostale_statki_aktywny_gracz = pozostale_statki_gracz1;
-    int ile_zatopiono_aktywne = ile_zatopiono_gracz1;
-    Plansza** aktywna_plansza = plansza_gracz1; //
-    StatekRoboczy* aktywne_statki = statki_gracz1;
-
-    bool czy_gra_zakonczona = false;
-    bool warunek_zakonczenia = false;
-    bool temp = false; // false - kolejka uz1, true - uz2
-    bool warunek_wpisywania = false;
-
-    my_list<Ruchy> lista_ruchow;
-    int temp_poprzedni_ruch_u1[2]{};
-    int temp_poprzedni_ruch_u2[2]{};
-
-    bool koniec_gry_temp = false;
-
-    while(!czy_gra_zakonczona) {
-        //petla do zgadywania pola - zamienia uzytkownika
-        while(!warunek_zakonczenia){
-            komunikat_przed(temp_poprzedni_ruch_u2, gracz.numer);
-            wypisz_wierszami(plansza_gracz1,dlugosc,szerokosc, czy_widoczne);
-            wypisz_wierszami(plansza_gracz2,dlugosc,szerokosc, czy_widoczne);
-
-            //zmienna przechowujaca jako tablica koordynaty zgadywanego pola - [szerokosc][dlugosc][glebokosc] - tu jest konfigurowana przed dzialaniem petli, gdzie jest aktualizowana
-            int* zgadywane_pole = metoda_zgadywania(szerokosc,dlugosc,gracz,aktywna_plansza, ile_zatopiono_aktywne);
-
-            // najpierw sprawdzamy czy podane pole jest poprawne
-            if (zgadywane_pole[0] == -10 || zgadywane_pole[1] == -10 ) {
-                koniec_gry_temp = true;
-                delete[] zgadywane_pole;
-                zgadywane_pole = nullptr;
-                break;
-            }
-
-            if(aktywna_plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte==true) {
-                warunek_wpisywania = false;
-                komunikaty(2); //pole juz uzyte
-            }
-            else{
-                warunek_wpisywania = true;
-                aktywna_plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte=true;
-            }
-
-
-            // zgadywanie pola (do zastapienia funckja)
-            while(!warunek_wpisywania) {
-                zgadywane_pole = metoda_zgadywania(szerokosc,dlugosc, gracz,aktywna_plansza, ile_zatopiono_aktywne);
-
-                if (zgadywane_pole[0] == -10 || zgadywane_pole[1] == -10) {
-                    koniec_gry_temp = true;
-                    delete[] zgadywane_pole;
-                    zgadywane_pole = nullptr;
-                    break;
-                }
-
-                if(aktywna_plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte==true) {
-                    warunek_wpisywania = false;
-                    komunikaty(2); //pole juz uzyte
-                }
-                else{
-                    warunek_wpisywania = true;
-                    aktywna_plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte=true;
-                }
-            }
-            if (koniec_gry_temp) {
-                break;
-            }
-            static int nr_ruchu=0;
-            //zapisz uzyte pole kazdego uzytkownika
-            if(!temp) {
-                temp_poprzedni_ruch_u1[0] = zgadywane_pole[0];
-                temp_poprzedni_ruch_u1[1] = zgadywane_pole[1];
-
-                dodaj_ruch(lista_ruchow, plansza_gracz1, nr_ruchu, temp_poprzedni_ruch_u1, 1 ,dlugosc,szerokosc);
-            }
-            else {
-                temp_poprzedni_ruch_u2[0] = zgadywane_pole[0];
-                temp_poprzedni_ruch_u2[1] = zgadywane_pole[1];
-
-                dodaj_ruch(lista_ruchow, plansza_gracz2, nr_ruchu, temp_poprzedni_ruch_u2, 2, dlugosc,szerokosc);
-            }
-            nr_ruchu++;
-
-            //jesli uzytkownik nie trafil zamien kolejke
-            if(!SprawdzPole(aktywne_statki, zgadywane_pole, aktywna_plansza, liczba_statkow, pozostale_statki_aktywny_gracz, ile_zatopiono_aktywne)) {
-                warunek_zakonczenia= true;
-            }
-            komunikat_po(aktywna_plansza, zgadywane_pole, pozostale_statki_aktywny_gracz);
-            // std::cout << "Pozostale statki: " << pozostale_statki_aktywny_gracz << std::endl;
-
-            delete[] zgadywane_pole;
-            zgadywane_pole = nullptr;
-        }
-
-        if(!koniec_gry_temp) {//kiedy zgadywane pole zwrocilo kod esc zakoncz gre, jesli nie to zmien kolejke
-            //zmiana parametrow po zmianie aktywnego uzytkownika
-            if(!temp) {
-                aktywne_statki = statki_gracz2;
-                gracz = gracz2;
-                aktywna_plansza = plansza_gracz2;
-                pozostale_statki_aktywny_gracz = pozostale_statki_gracz2;
-                ile_zatopiono_aktywne = ile_zatopiono_gracz2;
-                warunek_zakonczenia = false;
-                temp = true;
-            }
-            else {
-                aktywne_statki = statki_gracz1;
-                gracz = gracz1;
-                aktywna_plansza = plansza_gracz1;
-                pozostale_statki_aktywny_gracz = pozostale_statki_gracz1;
-                ile_zatopiono_aktywne = ile_zatopiono_gracz1;
-                warunek_zakonczenia = false;
-                temp = false;
-            }
-
-            // wypisz_ruchy(lista_ruchow,glebokosc,dlugosc,szerokosc);
-            zapisz_liste_ruchow(lista_ruchow);
-        }
-
-        //sprawdzic czy wszystkie statki trafione - warunek zakonczenia rozgrywki(petli glownej)
-        if(pozostale_statki_gracz1 == 0 || pozostale_statki_gracz2 == 0 || koniec_gry_temp) { //czy uzytkownik chce zakonczyc?
-            warunek_zakonczenia = true;
-            czy_gra_zakonczona = true;
-
-            usun_liste(lista_ruchow);
-
-
-        }
-    }
-}
-
 
 
 //Przyjmuje jako parametr zgadywany punkt i wszystkie statki, sprawdza jaki statek znajduje sie pod takim polem

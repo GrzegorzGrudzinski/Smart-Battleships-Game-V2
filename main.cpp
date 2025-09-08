@@ -13,8 +13,7 @@ int main()
     bool wyjscie = false;
     while(wyjscie == false)
     {
-        char menu_wyboru{};
-        menu_wyboru = menu();
+        char menu_wyboru = menu();
         switch(menu_wyboru){
             case '1': //rozgrywka
                 if(rozgrywka() == 0)

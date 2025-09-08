@@ -64,23 +64,60 @@ struct Uzytkownik {
   int numer; ///numer gracza
   int rodzaj; /// rodzaj gracza: 1-uzytkownik / 2-bot
   // string nazwa;
+  StatekRoboczy* statki;
+  int pozostale_statki;
+  int ile_zatopiono;
+  my_vector<my_vector<Plansza>> plansza;
+
 };
 
 class UzytkownikRoboczy {
   private:
-    int rodzaj;
-    int numer;
+    int numer; ///numer gracza
+    int rodzaj; /// rodzaj gracza: 1-uzytkownik / 2-bot
+    // string nazwa;
+    StatekRoboczy* statki;
     int pozostale_statki;
-    int wynik;
+    int ile_zatopiono;
+    my_vector<my_vector<Plansza>> plansza;
 
   public:
     UzytkownikRoboczy();
+    ~UzytkownikRoboczy();
 
     /*
      Dodac klasy czlowiek i bot, dziedziczace po uzytkownik, rozniace sie np. metoda zgadywania i zachowaniem, usunac Player_Info
      */
 };
 
+
+class Gra {
+  // zaczyna gracz 1
+  Uzytkownik gracz;   //
+  int pozostale_statki_aktywny_gracz;
+  int ile_zatopiono_aktywne;
+  Plansza** aktywna_plansza; //
+  StatekRoboczy* aktywne_statki;
+
+  // obsluga sledzenia ruchow
+  my_list<Ruchy> lista_ruchow;
+  int temp_poprzedni_ruch_u1[2]{};
+  int temp_poprzedni_ruch_u2[2]{};
+
+  // flagi do obslugi rozgrywki
+  bool czy_gra_zakonczona = false;
+  bool warunek_zakonczenia_tury = false;
+  bool czyja_kolejka = false; // false - kolejka uz1, true - uz2
+  bool warunek_wpisywania = false;
+  bool koniec_gry_temp = false;
+public:
+  Gra(Uzytkownik gracz, int ilosc_statkow, Plansza** plansza, StatekRoboczy* statki_gracza);
+  ~Gra();
+
+
+  void graj(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza** plansza_gracz2, int& pozostale_statki_gracz1, int& pozostale_statki_gracz2, StatekRoboczy statki_gracz1[], StatekRoboczy statki_gracz2[], int liczba_statkow, int szerokosc, int dlugosc, int& ile_zatopiono_gracz1, int& ile_zatopiono_gracz2, bool czy_widoczne);
+
+};
 
 // Funkcje do obsługi rozgrywki//
 
