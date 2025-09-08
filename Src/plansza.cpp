@@ -2,18 +2,13 @@
 
 Plansza** stworz_plansze( int D, int S)
 {
-    // Alokacja pamięci dla pierwszego wymiaru
     Plansza** temp = new Plansza*[D];
-    for(int j = 0; j < D; j++)
-        // Alokacja pamięci dla trzeciego wymiaru
-        temp[j] = new Plansza[S];
-
-    //inicjacja pol
-    for(int j=0; j<D; j++) {
-        for(int k=0; k<S; k++)
+    for(int i = 0; i < D; ++i) {
+        temp[i] = new Plansza[S];
+        for(int j=0; j<S; ++j)
         {
-            temp[j][k].czy_uzyte = false;
-            temp[j][k].statek = 0;
+            temp[i][j].czy_uzyte = false;
+            temp[i][j].statek = 0;
         }
     }
 

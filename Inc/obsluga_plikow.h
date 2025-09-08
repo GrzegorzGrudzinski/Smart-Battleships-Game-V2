@@ -25,6 +25,6 @@ bool otworz_plik_ustawienia(int& x,int& y, int& uzytkownik1_rodzaj, int& uzytkow
 /**
     Funkcja zapisująca listę wszystkich wykonanych przez graczy ruchów do pliku "log.txt" w katalogu "pliki/log/"
 */
-void zapisz_liste_ruchow(Ruchy* ruch, int D, int S);
+void zapisz_liste_ruchow(my_list<Ruchy>& lista_ruchow, int D, int S);
 
 #endif

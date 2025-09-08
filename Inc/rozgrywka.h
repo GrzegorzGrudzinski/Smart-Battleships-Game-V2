@@ -26,29 +26,14 @@ struct Ruchy  {
     // Koordynaty podanego przez użytkownika pola w formie tabeli
     int uzyte_pole[2];
     // Kopia planszy na której jest wykonywany ruch
-    Plansza** plansza; //kopia planszy w wezle( kto mial ruch, trafil czy nie)
+    // Plansza** plansza; //kopia planszy w wezle( kto mial ruch, trafil czy nie)
+    my_vector<my_vector<Plansza>> plansza;
+
 
     // pola do przechowywania wymiarów planszy
     int D;  ///dlugosc planszy
     int S;  ///szerokosc planszy
-
-    Ruchy* nastepny;
 };
-
-/**
-  Struktura definiująca statek umieszczany na planszy - koordynaty jego punktów skrajnych, rozmiar oraz liczbę pól które nie zostały jeszcze zatopione
-*/
-///Definiuje statek umieszczany na planszy
-/*/ struct Statek {
-//     /// pierwszy punkt w którym umieszczony jest statek
-//     int punkt_poczatek[2];
-//     /// ostatni punkt w którym umieszczony jest statek
-//     int punkt_koniec[2];
-//     /// rozmiar statku - liczba pól jaką zajmował będzie na planszy
-//     int rozmiar;
-//     /// liczba pól które nie zostały jeszcze zatopione przez przeciwnika
-//     int pozostale_pola;
- }; /*/
 
 
 class StatekRoboczy {
@@ -128,17 +113,17 @@ bool SprawdzPole(StatekRoboczy statki[], int zgadywane_pole[], Plansza** plansza
 // bool sprawdz_pole(Statek najwiekszy[], Statek duzy[], Statek sredni[], Statek maly[], int zgadywane_pole[], Plansza** plansza, int statek_najwiekszy_ile, int statek_duzy_ile, int statek_sredni_ile, int statek_maly_ile, int& pozostale_statki, int& ile_zatopiono);
 
 /// Funkcja przyjmuje jako parametr zgadywany punkt i wszystkie statki, sprawdza czy, jaki statek znajduje sie pod takim polem
-bool CzyTrafiony(StatekRoboczy statek, int& pozostale_statki, int S, int D, int& ile_zatopiono);
+bool CzyTrafiony(StatekRoboczy& statek, int& pozostale_statki, int S, int D, int& ile_zatopiono);
 // bool czy_trafiony(Statek statek[], int statek_ile, Plansza** plansza, int& pozostale_statki, int S, int D, int& ile_zatopiono);
 
 
 // obsluga listy ruchow //
 
 /// Funkcja dodająca wykonany ruch na koniec listy ruchów
-void dodaj_ruch(Ruchy*& ruch, Plansza** plansza_gracz, int numer_ruchu, int uzyte_pole[], int gracz, int D, int S); //zapisz wykonany ruch
+void dodaj_ruch(my_list<Ruchy>& lista_ruchow, Plansza** plansza_gracz, int numer_ruchu, int uzyte_pole[], int gracz, int D, int S); //zapisz wykonany ruch
 
 /// Funkcja służąca do zwolnienia pamięci z listy ruchów
-void usun_liste(Ruchy*& ruch);
+void usun_liste(my_list<Ruchy>& lista_ruchow);
 
 #endif
 

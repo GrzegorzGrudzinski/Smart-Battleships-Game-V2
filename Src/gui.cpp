@@ -225,29 +225,29 @@ int komunikat_po(Plansza** plansza, int zgadywane_pole[], int pozostale_statki_a
     */
 }
 
-void wypisz_ruchy(Ruchy* w, int D, int S)
+void wypisz_ruchy(my_list<Ruchy> lista_ruchow, int D, int S)
 {
-    if(w == nullptr)
+    if(lista_ruchow.get_size() == 0)
         return;
 
     using std::cout;
     using std::endl;
 
-    while(w!=NULL)
+    for (Ruchy data : lista_ruchow)
     {
-        cout << w->numer_ruchu << endl;
+        cout << data.numer_ruchu << endl;
 
         for(int j=0; j<D; j++) {
             for(int k=0; k<S; k++) {
-                // cout <<  w->plansza[i][j][k].statek;
-                if((w->plansza[j][k].czy_uzyte!=0) && (w->plansza[j][k].statek!=0)) {
+                // cout <<  data.plansza[i][j][k].statek;
+                if((data.plansza[j][k].czy_uzyte!=0) && (data.plansza[j][k].statek!=0)) {
                     cout << std::setw(3) << '*';
                 }
-                else if((w->plansza[j][k].czy_uzyte!=0) && (w->plansza[j][k].statek==0)) {
+                else if((data.plansza[j][k].czy_uzyte!=0) && (data.plansza[j][k].statek==0)) {
                     cout << std::setw(3) << '.';
                 }
                 else {
-                    cout << std::setw(3) << w->plansza[j][k].statek;
+                    cout << std::setw(3) << data.plansza[j][k].statek;
                 }
 
             } cout << endl;
@@ -255,10 +255,10 @@ void wypisz_ruchy(Ruchy* w, int D, int S)
 
         cout << "Uzyte pole: " ;
         for(int i=0; i<3; i++)
-            cout << w->uzyte_pole[i]<<'\t';
+            cout << lista_ruchow.get_element(i).uzyte_pole[i]<<'\t';
         cout << endl;
 
-        w = w->nastepny;
+        // w = w->nastepny;
     }
 }
 
