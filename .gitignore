@@ -1,0 +1,11 @@
+*.exe
+*.o
+.*
+!.git*
+dokumentacja/
+docs/
+build/
+notatki.md
+*.kdev4
+lib/
+zapis_rozgrywki.txt
