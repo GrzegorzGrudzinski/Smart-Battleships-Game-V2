@@ -94,8 +94,8 @@ class UzytkownikRoboczy {
 
 class Gra {
   // zaczyna gracz 1
-  Uzytkownik przeciwnik;
-  Uzytkownik gracz;   //
+  Uzytkownik& przeciwnik;
+  Uzytkownik& gracz;   //
 
   Uzytkownik aktywny_gracz;
 
@@ -118,12 +118,14 @@ public:
   Gra(Uzytkownik& gracz1, Uzytkownik& gracz2, int D, int S, int liczba_statkow);
   // ~Gra();
 
-  void ustaw_parametry(Uzytkownik& gracz1, Uzytkownik& gracz2);
+  // void UstawParametry(Uzytkownik& gracz1, Uzytkownik& gracz2);
 
   /**
    * Funkcja w której odbywa się rozgrywka - użytkownicy podają swoje pola, pole jest sprawdzane, przyznawana jest kolejka.
    */
   void graj(bool czy_widoczne);
+
+  int* PodajWspolrzedne();
 
 };
 

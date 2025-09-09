@@ -149,8 +149,7 @@ Gra::Gra(Uzytkownik& gracz1, Uzytkownik& gracz2, int D, int S, int liczba_statko
     // ustaw_parametry(gracz1, gracz2);
 }
 
-void Gra::ustaw_parametry(Uzytkownik& gracz1, Uzytkownik& gracz2)
-{}
+// void Gra::UstawParametry(Uzytkownik& gracz1, Uzytkownik& gracz2){}
 
 
 void Gra::graj(bool czy_widoczne)
@@ -168,46 +167,15 @@ void Gra::graj(bool czy_widoczne)
             /****** ZGADYWANIE POLA (TODO zastopic to funkcja) ******/
 
             //zmienna przechowujaca jako tablica koordynaty zgadywanego pola - [szerokosc][dlugosc] - tu jest konfigurowana przed dzialaniem petli, gdzie jest aktualizowana
-            int* zgadywane_pole = metoda_zgadywania(szerokosc,dlugosc,aktywny_gracz,aktywny_gracz.plansza, aktywny_gracz.ile_zatopiono);
-
+            int* zgadywane_pole = PodajWspolrzedne();
             // najpierw sprawdzamy czy podane pole jest poprawne (-10 - blad)
             if (zgadywane_pole[0] == -10 || zgadywane_pole[1] == -10 ) { // error
                 koniec_gry_temp = true;
                 delete[] zgadywane_pole;
                 zgadywane_pole = nullptr;
-                break;
+                break; //!
             }
 
-            // sprawdz czy pole jest juz uzyte - jesli nie to je tak oznacz
-            if(aktywny_gracz.plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte==true) {
-                warunek_wpisywania = false;
-                komunikaty(2); // pole juz uzyte
-            }
-            else{
-                warunek_wpisywania = true;
-                aktywny_gracz.plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte=true;
-            }
-            // zgadywanie pola jesli nie powiodlo sie za pierwszym razem
-            while(!warunek_wpisywania) {
-                // pole
-                zgadywane_pole = metoda_zgadywania(szerokosc,dlugosc, aktywny_gracz, aktywny_gracz.plansza, aktywny_gracz.ile_zatopiono);
-
-                if (zgadywane_pole[0] == -10 || zgadywane_pole[1] == -10) {
-                    koniec_gry_temp = true;
-                    delete[] zgadywane_pole;
-                    zgadywane_pole = nullptr;
-                    break;
-                }
-
-                if(aktywny_gracz.plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte==true) {
-                    warunek_wpisywania = false;
-                    komunikaty(2); //pole juz uzyte
-                }
-                else{
-                    warunek_wpisywania = true;
-                    aktywny_gracz.plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte=true;
-                }
-            }
             if (koniec_gry_temp) { // zakoncz rozgywke jesli byl blad / uzytkownik chce
                 break;
             }
@@ -274,6 +242,50 @@ void Gra::graj(bool czy_widoczne)
 }
 
 
+int * Gra::PodajWspolrzedne()
+{
+    int* zgadywane_pole = metoda_zgadywania(szerokosc,dlugosc,aktywny_gracz,aktywny_gracz.plansza, aktywny_gracz.ile_zatopiono);
+
+    // najpierw sprawdzamy czy podane pole jest poprawne (-10 - blad)
+    if (zgadywane_pole[0] == -10 || zgadywane_pole[1] == -10 ) { // error
+        koniec_gry_temp = true;
+        delete[] zgadywane_pole;
+        zgadywane_pole = nullptr;
+        return zgadywane_pole; //!
+    }
+
+    // sprawdz czy pole jest juz uzyte - jesli nie to je tak oznacz
+    if(aktywny_gracz.plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte==true) {
+        warunek_wpisywania = false;
+        komunikaty(2); // pole juz uzyte
+    }
+    else{
+        warunek_wpisywania = true;
+        aktywny_gracz.plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte=true;
+    }
+    // zgadywanie pola jesli nie powiodlo sie za pierwszym razem
+    while(!warunek_wpisywania) {
+        // pole
+        zgadywane_pole = metoda_zgadywania(szerokosc,dlugosc, aktywny_gracz, aktywny_gracz.plansza, aktywny_gracz.ile_zatopiono);
+
+        if (zgadywane_pole[0] == -10 || zgadywane_pole[1] == -10) {
+            koniec_gry_temp = true;
+            delete[] zgadywane_pole;
+            zgadywane_pole = nullptr;
+            break;
+        }
+
+        if(aktywny_gracz.plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte==true) {
+            warunek_wpisywania = false;
+            komunikaty(2); //pole juz uzyte
+        }
+        else{
+            warunek_wpisywania = true;
+            aktywny_gracz.plansza[zgadywane_pole[1]][zgadywane_pole[0]].czy_uzyte=true;
+        }
+    } // while
+    return zgadywane_pole;
+}
 
 
 // obsluga listy ruchow //

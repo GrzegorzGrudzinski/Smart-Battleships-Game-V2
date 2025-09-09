@@ -5,7 +5,8 @@
 dokumentacja/
 docs/
 build/
-notatki.md
 *.kdev4
 lib/
+
+notatki.md
 zapis_rozgrywki.txt
