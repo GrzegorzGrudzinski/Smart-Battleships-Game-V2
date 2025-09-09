@@ -67,7 +67,8 @@ struct Uzytkownik {
   StatekRoboczy* statki;
   int pozostale_statki;
   int ile_zatopiono;
-  my_vector<my_vector<Plansza>> plansza;
+  Plansza** plansza;
+  // my_vector<my_vector<Plansza>> plansza;
 
 };
 
@@ -93,17 +94,20 @@ class UzytkownikRoboczy {
 
 class Gra {
   // zaczyna gracz 1
+  Uzytkownik przeciwnik;
   Uzytkownik gracz;   //
-  int pozostale_statki_aktywny_gracz;
-  int ile_zatopiono_aktywne;
-  Plansza** aktywna_plansza; //
-  StatekRoboczy* aktywne_statki;
+
+  Uzytkownik aktywny_gracz;
 
   // obsluga sledzenia ruchow
   my_list<Ruchy> lista_ruchow;
   int temp_poprzedni_ruch_u1[2]{};
   int temp_poprzedni_ruch_u2[2]{};
 
+
+  int dlugosc;
+  int szerokosc;
+  int poczatkowa_liczba_statkow;
   // flagi do obslugi rozgrywki
   bool czy_gra_zakonczona = false;
   bool warunek_zakonczenia_tury = false;
@@ -111,11 +115,15 @@ class Gra {
   bool warunek_wpisywania = false;
   bool koniec_gry_temp = false;
 public:
-  Gra(Uzytkownik gracz, int ilosc_statkow, Plansza** plansza, StatekRoboczy* statki_gracza);
-  ~Gra();
+  Gra(Uzytkownik& gracz1, Uzytkownik& gracz2, int D, int S, int liczba_statkow);
+  // ~Gra();
 
+  void ustaw_parametry(Uzytkownik& gracz1, Uzytkownik& gracz2);
 
-  void graj(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza** plansza_gracz2, int& pozostale_statki_gracz1, int& pozostale_statki_gracz2, StatekRoboczy statki_gracz1[], StatekRoboczy statki_gracz2[], int liczba_statkow, int szerokosc, int dlugosc, int& ile_zatopiono_gracz1, int& ile_zatopiono_gracz2, bool czy_widoczne);
+  /**
+   * Funkcja w której odbywa się rozgrywka - użytkownicy podają swoje pola, pole jest sprawdzane, przyznawana jest kolejka.
+   */
+  void graj(bool czy_widoczne);
 
 };
 
@@ -126,12 +134,6 @@ public:
   Zwraca 0 po zakończeniu swojego działania
 */
 int rozgrywka();
-
-/**
-  Funkcja w której odbywa się rozgrywka - użytkownicy podają swoje pola, pole jest sprawdzane, przyznawana jest kolejka.
-*/
-void Gra(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza** plansza_gracz2, int& pozostale_statki_gracz1, int& pozostale_statki_gracz2, StatekRoboczy statki_gracz1[], StatekRoboczy statki_gracz2[], int liczba_statkow, int szerokosc, int dlugosc, int& ile_zatopiono_gracz1, int& ile_zatopiono_gracz2, bool czy_widoczne);
-// void gra(Uzytkownik gracz1, Uzytkownik gracz2, Plansza** plansza_gracz1, Plansza** plansza_gracz2, int& pozostale_statki_gracz1, int& pozostale_statki_gracz2, Statek najwiekszy1[], Statek duzy1[], Statek sredni1[], Statek maly1[], Statek najwiekszy2[], Statek duzy2[], Statek sredni2[], Statek maly2[], int* liczba_statkow_arr, int szerokosc, int dlugosc, int& ile_zatopiono_gracz1, int& ile_zatopiono_gracz2, bool czy_widoczne);
 
 
 //

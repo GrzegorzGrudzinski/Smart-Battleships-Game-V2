@@ -205,7 +205,7 @@ void zapisz_liste_ruchow(my_list<Ruchy>& lista_ruchow)
     else {  //jesli plik zostal poprawnie otwarty to zapisz w nim liste ruchow
 
         for (const Ruchy& data : lista_ruchow){
-            plik_lista_zapis << "\n*** Ruch numer: " <<  data.numer_ruchu << " ***";
+            plik_lista_zapis << "\n *** Ruch numer: " <<  data.numer_ruchu << " ***";
             plik_lista_zapis << "\nGracz: "<< data.uzytkownik <<'\n';
 
             if (data.plansza.get_size() == 0) {
