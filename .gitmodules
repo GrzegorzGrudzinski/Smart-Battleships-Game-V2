@@ -1,6 +1,3 @@
-[submodule "Inc/Data_Structures"]
-	path = Inc/Data_Structures
-	url = https://github.com/GrzegorzGrudzinski/Data_Structures.git
 [submodule "Data_Structures"]
 	path = Data_Structures
 	url = https://github.com/GrzegorzGrudzinski/Data_Structures.git
