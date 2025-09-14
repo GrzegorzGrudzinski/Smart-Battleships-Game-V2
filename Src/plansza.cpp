@@ -1,32 +1,22 @@
 #include "plansza.h"
 
-Plansza** stworz_plansze( int D, int S)
+my_vector<my_vector<Plansza>> stworz_plansze( int D, int S)
 {
-    Plansza** temp = new Plansza*[D];
-    for(int i = 0; i < D; ++i) {
-        temp[i] = new Plansza[S];
-        for(int j=0; j<S; ++j)
-        {
+    my_vector<my_vector<Plansza>> temp;
+    temp.resize(D);
+    for (int i = 0; i < D; ++i) {
+        temp[i].resize(S);
+        for (int j = 0; j < S; ++j) {
             temp[i][j].czy_uzyte = false;
             temp[i][j].statek = 0;
         }
     }
-
     return temp;
 }
 
-void usun_plansze(Plansza**& plansza, int D) //(Plansza ***&t, int G, int D)
+void usun_plansze(my_vector<my_vector<Plansza>>& plansza, int D) //(Plansza ***&t, int G, int D)
 {
-    if (plansza == nullptr)
-        return; // Nic do zwolnienia, wskaźnik jest już nullptr
-
-    // Zwolnienie pamięci dla każdego wymiaru
-    for(int j = 0; j < D; j++)
-        delete[] plansza[j];
-
-    // Zwolnienie pamięci dla wskaźnika głównego
-    delete[] plansza;
-    plansza = nullptr;
+    plansza.clean();
 }
 
 

@@ -67,8 +67,8 @@ struct Uzytkownik {
   StatekRoboczy* statki;
   int pozostale_statki;
   int ile_zatopiono;
-  Plansza** plansza;
-  // my_vector<my_vector<Plansza>> plansza;
+  // Plansza** plansza;
+  my_vector<my_vector<Plansza>> plansza;
 
 };
 
@@ -144,21 +144,21 @@ void UtworzStatkiGracza(StatekRoboczy* statki_arr, int* liczba_statkow_arr);
 
 // Funkcje do sprawdzania podanego pola //
 
-int* metoda_zgadywania(int S,int D, Uzytkownik gracz, Plansza** plansza, int& ile_zatopiono);
+int* metoda_zgadywania(int S,int D, Uzytkownik gracz, my_vector<my_vector<Plansza>> plansza, int& ile_zatopiono);
 
 /// Funkcja sprawdzająca, czy na podanym polu planszy znajduje się jakiś statek - zwraca true, jeśli go znajdzie.
-bool SprawdzPole(StatekRoboczy statki[], int zgadywane_pole[], Plansza** plansza, int liczba_statkow, int& pozostale_statki, int& ile_zatopiono);
-// bool sprawdz_pole(Statek najwiekszy[], Statek duzy[], Statek sredni[], Statek maly[], int zgadywane_pole[], Plansza** plansza, int statek_najwiekszy_ile, int statek_duzy_ile, int statek_sredni_ile, int statek_maly_ile, int& pozostale_statki, int& ile_zatopiono);
+bool SprawdzPole(StatekRoboczy statki[], int zgadywane_pole[], my_vector<my_vector<Plansza>> plansza, int liczba_statkow, int& pozostale_statki, int& ile_zatopiono);
+// bool sprawdz_pole(Statek najwiekszy[], Statek duzy[], Statek sredni[], Statek maly[], int zgadywane_pole[], my_vector<my_vector<Plansza>> plansza, int statek_najwiekszy_ile, int statek_duzy_ile, int statek_sredni_ile, int statek_maly_ile, int& pozostale_statki, int& ile_zatopiono);
 
 /// Funkcja przyjmuje jako parametr zgadywany punkt i wszystkie statki, sprawdza czy, jaki statek znajduje sie pod takim polem
 bool CzyTrafiony(StatekRoboczy& statek, int& pozostale_statki, int S, int D, int& ile_zatopiono);
-// bool czy_trafiony(Statek statek[], int statek_ile, Plansza** plansza, int& pozostale_statki, int S, int D, int& ile_zatopiono);
+// bool czy_trafiony(Statek statek[], int statek_ile, my_vector<my_vector<Plansza>> plansza, int& pozostale_statki, int S, int D, int& ile_zatopiono);
 
 
 // obsluga listy ruchow //
 
 /// Funkcja dodająca wykonany ruch na koniec listy ruchów
-void dodaj_ruch(my_list<Ruchy>& lista_ruchow, Plansza** plansza_gracz, int numer_ruchu, int uzyte_pole[], int gracz, int D, int S); //zapisz wykonany ruch
+void dodaj_ruch(my_list<Ruchy>& lista_ruchow, my_vector<my_vector<Plansza>> plansza_gracz, int numer_ruchu, int uzyte_pole[], int gracz, int D, int S); //zapisz wykonany ruch
 
 /// Funkcja służąca do zwolnienia pamięci z listy ruchów
 void usun_liste(my_list<Ruchy>& lista_ruchow);

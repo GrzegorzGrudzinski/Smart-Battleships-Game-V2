@@ -79,8 +79,8 @@ int rozgrywka()
     otworz_plik_ustawienia(S,D,gracz1.rodzaj,gracz2.rodzaj, czy_widoczne);
 
     // Tworzenie planszy
-    Plansza** plansza_gracz1 = stworz_plansze(D,S);
-    Plansza** plansza_gracz2 = stworz_plansze(D,S);
+    my_vector<my_vector<Plansza>> plansza_gracz1 = stworz_plansze(D,S);
+    my_vector<my_vector<Plansza>> plansza_gracz2 = stworz_plansze(D,S);
 
 
     /****** Ustawienia statkow ******/
@@ -287,7 +287,7 @@ int * Gra::PodajWspolrzedne()
 
 // obsluga listy ruchow //
 
-void dodaj_ruch(my_list<Ruchy>& lista_ruchow, Plansza** plansza_gracz, int numer_ruchu, int uzyte_pole[], int gracz, int D, int S)
+void dodaj_ruch(my_list<Ruchy>& lista_ruchow, my_vector<my_vector<Plansza>> plansza_gracz, int numer_ruchu, int uzyte_pole[], int gracz, int D, int S)
 {
     // Tworzenie kopii planszy
     my_vector<my_vector<Plansza>> kopia;
@@ -319,7 +319,7 @@ void usun_liste(my_list<Ruchy>& lista_ruchow)
 // Funkcje do sprawdzania podanego pola //
 
 //wybiera metode w jaka podawane jest zgadywane pole w zaleznosci od typu gracza (bot/uzytkownik)
-int* metoda_zgadywania(int S,int D, Uzytkownik gracz, Plansza** plansza, int& ile_zatopiono)
+int* metoda_zgadywania(int S,int D, Uzytkownik gracz, my_vector<my_vector<Plansza>> plansza, int& ile_zatopiono)
 {
     if(gracz.rodzaj == 1) return zgadnij_pole(S,D);
     else return losuj_pole(S,D, plansza, ile_zatopiono);
@@ -328,7 +328,7 @@ int* metoda_zgadywania(int S,int D, Uzytkownik gracz, Plansza** plansza, int& il
 //////////////////////////
 
 
-bool SprawdzPole(StatekRoboczy statki[], int zgadywane_pole[], Plansza** plansza, int liczba_statkow, int& pozostale_statki, int& ile_zatopiono)
+bool SprawdzPole(StatekRoboczy statki[], int zgadywane_pole[], my_vector<my_vector<Plansza>> plansza, int liczba_statkow, int& pozostale_statki, int& ile_zatopiono)
 {
     int S = zgadywane_pole[0];
     int D = zgadywane_pole[1];
