@@ -5,8 +5,6 @@
 #include "obsluga_plikow.h"
 #include "my_list.h"
 
-#include <iostream>
-
 // StatekRoboczy::StatekRoboczy(int r): rozmiar(r) , pozostale_pola(r) {}
 
 void StatekRoboczy::UstawRozmiar (int r) {
