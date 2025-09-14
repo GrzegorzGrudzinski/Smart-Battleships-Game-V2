@@ -39,20 +39,20 @@ void znajdz_ile_statkow(int szerokosc, int dlugosc, int* liczba_statkow_arr, int
 */
 void RozstawStatekRoboczyLosowo(
     int szerokosc, int dlugosc,
-    StatekRoboczy& statek, Plansza** plansza);
+    StatekRoboczy& statek, my_vector<my_vector<Plansza>> plansza);
 // void rozstaw_statki_losowo(int szerokosc, int dlugosc, Statek statek[], int rozmiar_statku, Plansza** plansza, int i);
 
 /**
     Funkcja ktora po wywolaniu umieszcza wszystkie statki na planszy - losuje jego pozycje a nastepnie oznacza pola planszy jako zajete
 */
-void DodajStatki(int szerokosc, int dlugosc, StatekRoboczy statki[], int liczba_statkow ,Plansza**& plansza);
+void DodajStatki(int szerokosc, int dlugosc, StatekRoboczy statki[], int liczba_statkow ,my_vector<my_vector<Plansza>>& plansza);
 // void dodaj_statek(int szerokosc, int dlugosc, Statek statek[], int statek_ile, int statek_rozmiar, Plansza**& plansza);
 
 
 /**
  * Funkcja mająca oznaczyć pola planszy na których został umieszczony statek jako zajęte.
  */
-void DodajStatekNaPlansze(Plansza**& plansza, StatekRoboczy& statek);
+void DodajStatekNaPlansze(my_vector<my_vector<Plansza>>& plansza, StatekRoboczy& statek);
 
 
 
@@ -73,11 +73,11 @@ void DodajStatekNaPlansze(Plansza**& plansza, StatekRoboczy& statek);
         pole[1] = dlugosc;  \n
         pole[2] = glebokosc;\n
 */
-int* losuj_pole(int szerokosc, int dlugosc, Plansza** plansza, int ile_zatopiono); /*losuj pole uzytkownika -  */
+int* losuj_pole(int szerokosc, int dlugosc, my_vector<my_vector<Plansza>> plansza, int ile_zatopiono); /*losuj pole uzytkownika -  */
 
 /**
     Funkcja zgadująca pola statku, gdy znany jest kierunek w jakim jest ustawiony (na podstawie dwóch sąsiednich zgadniętych pól)
 */
-int trafiono(Plansza** plansza, int pole1, int pole2, int& ostatnie_pole, int pole_sprawdzajace, int kierunek, int ile_zatopiono, int szerokosc, int dlugosc);
+int trafiono(my_vector<my_vector<Plansza>> plansza, int pole1, int pole2, int& ostatnie_pole, int pole_sprawdzajace, int kierunek, int ile_zatopiono, int szerokosc, int dlugosc);
 
 #endif

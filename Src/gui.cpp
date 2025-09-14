@@ -139,9 +139,9 @@ int* zgadnij_pole(int szerokosc, int dlugosc)
     return pole;
 }
 
-void wypisz_wierszami(Plansza **t, int D, int S, bool czy_widoczne)
+void wypisz_wierszami(my_vector<my_vector<Plansza>>t, int D, int S, bool czy_widoczne)
 {
-     if (t == nullptr) {
+     if (t.get_size() == 0) {
         cout << endl << "Blad: pusta tablica" << endl<<endl;
         return;
     } cout<<endl<<endl;
@@ -195,7 +195,7 @@ void komunikat_przed(int poprzedni_ruch[], int uzytkownik)
 }
 
 //TO DO - przeniesc do gui  - funkcja wypisujaca komunikat po ruchu
-int komunikat_po(Plansza** plansza, int zgadywane_pole[], int pozostale_statki_aktywny_gracz)//g d s
+int komunikat_po(my_vector<my_vector<Plansza>> plansza, int zgadywane_pole[], int pozostale_statki_aktywny_gracz)//g d s
 {
     czekaj(1);
     cout<<"Podane pole: "<<char('A'+char(zgadywane_pole[0]))<<zgadywane_pole[1]<<'\t';

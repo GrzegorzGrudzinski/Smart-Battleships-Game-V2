@@ -70,7 +70,7 @@ void znajdz_ile_statkow(
 
 //-10 = namierzono inny; -20 = zatopiono;
 //funkcja ktora obsluguje zgadywanie pola po okresleniu kierunku zgadywania
-int trafiono(Plansza** plansza, int pole1, int pole2, int& ostatnie_pole, int pole_sprawdzajace, int kierunek, int ile_zatopiono, int szerokosc, int dlugosc)
+int trafiono(my_vector<my_vector<Plansza>> plansza, int pole1, int pole2, int& ostatnie_pole, int pole_sprawdzajace, int kierunek, int ile_zatopiono, int szerokosc, int dlugosc)
 {
     static int temp_ostatnie_pole = ostatnie_pole;
     static int czy_zatopiono_nowy = 0;
@@ -147,7 +147,7 @@ int trafiono(Plansza** plansza, int pole1, int pole2, int& ostatnie_pole, int po
     return ostatnie_pole;
 }
 
-int* losuj_pole(int szerokosc, int dlugosc,  Plansza** plansza, int ile_zatopiono)
+int* losuj_pole(int szerokosc, int dlugosc,  my_vector<my_vector<Plansza>> plansza, int ile_zatopiono)
 {
     // komunikaty(2);//kolejka gracza
 
@@ -324,7 +324,7 @@ int* losuj_pole(int szerokosc, int dlugosc,  Plansza** plansza, int ile_zatopion
 
 void RozstawStatekRoboczyLosowo(
     int szerokosc, int dlugosc,
-    StatekRoboczy& statek, Plansza** plansza)
+    StatekRoboczy& statek, my_vector<my_vector<Plansza>> plansza)
 {
     //liczniki awaryjne do petli
     int licznik1 = 0;
@@ -383,7 +383,7 @@ void RozstawStatekRoboczyLosowo(
                     wylosowano = true;
 
                     for (int j = 0; j < rozmiar_statku; j++) {
-                        if (plansza[losuj_dlugosc + j * wspolczynnik_losowania_zwrot][losuj_szerokosc].statek != 0) {
+                        if (plansza[losuj_dlugosc + j*wspolczynnik_losowania_zwrot][losuj_szerokosc].statek != 0) {
                             wylosowano = false;
                             break;
                         }
@@ -413,7 +413,7 @@ void RozstawStatekRoboczyLosowo(
     /*/
 }
 
-void DodajStatekNaPlansze(Plansza**& plansza, StatekRoboczy& statek)
+void DodajStatekNaPlansze(my_vector<my_vector<Plansza>>& plansza, StatekRoboczy& statek)
 {
     int rozmiar_statku = statek.Rozmiar();
     int nazwa_statku = rozmiar_statku;
@@ -469,7 +469,7 @@ void DodajStatekNaPlansze(Plansza**& plansza, StatekRoboczy& statek)
 }
 
 
-void DodajStatki(int szerokosc, int dlugosc, StatekRoboczy statki[], int liczba_statkow ,Plansza**& plansza)
+void DodajStatki(int szerokosc, int dlugosc, StatekRoboczy statki[], int liczba_statkow ,my_vector<my_vector<Plansza>>& plansza)
 {
     for(int i=0; i<liczba_statkow; i++) {
         RozstawStatekRoboczyLosowo(szerokosc,dlugosc, statki[i], plansza);

@@ -26,12 +26,12 @@ struct Plansza ///Tworzy pole planszy do gry
 
     Zwraca jako wskaźnik tablicę trójwymiarową (trzeci wymiar jest w obecnej wersji nieużywany)
  */
-Plansza** stworz_plansze(int D, int S);
+my_vector<my_vector<Plansza>> stworz_plansze(int D, int S);
 
 /**
     Funkcja służąca do usunięcia tablicy przechowującej planszę do gry
  */
-void usun_plansze(Plansza**& plansza, int D);
+void usun_plansze(my_vector<my_vector<Plansza>>& plansza, int D);
 
 
 /**
