@@ -125,8 +125,6 @@ int rozgrywka()
 
 
     /****** Rozgrywka ******/
-    // Gra(gracz1,gracz2,plansza_gracz1,plansza_gracz2, pozostale_statki_gracz1, pozostale_statki_gracz2, statki_gracz1, statki_gracz2, poczatkowa_liczba_statkow, S, D, ile_zatopiono_gracz1, ile_zatopiono_gracz2, czy_widoczne);
-
     class Gra gra(gracz1, gracz2, D, S, poczatkowa_liczba_statkow);
     gra.graj(czy_widoczne);
 
@@ -238,7 +236,6 @@ void Gra::graj(bool czy_widoczne)
             usun_liste(lista_ruchow);
         }
     }
-
 }
 
 
