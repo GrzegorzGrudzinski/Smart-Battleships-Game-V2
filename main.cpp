@@ -18,7 +18,7 @@ int main()
             case '1': //rozgrywka
                 if(rozgrywka() == 0)
                     //komunikat po zakonczeniu rozgrywki
-                    wyjscie = true;
+                    continue;
                 break;
             case '2': //ustawienia
                 modyfikuj_plik_ustawienia();

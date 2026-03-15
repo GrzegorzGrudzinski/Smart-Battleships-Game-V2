@@ -3,6 +3,8 @@ Game of battleships, which can be played vs computer (which tries to behave like
 
 Main goal of this project was to learn **object-oriented programming**, **dynamic data structures** and **memory allocation** without using STL.
 
+![Demo](images/demo.gif)
+
 # Features
  * Changable board size (number of ships changes automatically to cover field of ~30% of the board)
  * Automatic ships allocation
